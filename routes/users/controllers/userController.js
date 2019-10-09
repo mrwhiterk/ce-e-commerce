@@ -16,8 +16,8 @@ module.exports = {
             reject(errors);
           } else {
             const newUser = new User();
-            newUser.profile.name = params.name;
-            newUser.password.name = params.password;
+            
+            newUser.password = params.password;
             newUser.email = params.email;
 
             bcrypt.genSalt(10, (err, salt) => {
@@ -51,20 +51,20 @@ module.exports = {
 
             reject(errors);
           } else {
-            const newUser = new User();
-            newUser.profile.name = params.name;
-            newUser.password.name = params.password;
-            newUser.email = params.email;
-            bcrypt.genSalt(10, (err, salt) => {
-              bcrypt.hash(newUser.password, salt, (err, hash) => {
-                if (err) {
-                  reject(err);
-                } else {
-                  newUser.password = hash
-                  resolve(newUser);
-                }
-              })
-            })
+            
+            bcrypt.compare(params.password, user.password, function(err, r) {
+              console.log('r: ', r);
+              if (!r) {
+                let errors = {};
+                errors.message = 'Compare failed';
+                errors.status = 400;
+
+                reject(errors);
+              } else {
+                resolve(user);
+              }
+            });
+            
           }
         })
         .catch(err => reject(err));
