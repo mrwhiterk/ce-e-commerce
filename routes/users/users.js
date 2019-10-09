@@ -24,4 +24,20 @@ router.post('/signup', (req, res) => {
     });
 });
 
+router.get('/login', (req, res) => {
+  res.render('auth/login', { errors: [] });
+})
+
+router.post('/login', (req, res) => {
+  userController
+    .login(req.body)
+    .then(user => {
+      res.render('index', {successMessage: 'Successfully logged in'});
+    })
+    .catch(error => {
+      console.log('error**: ', error)
+      res.render('auth/login', { errors: [error.message] })
+    })
+})
+
 module.exports = router;

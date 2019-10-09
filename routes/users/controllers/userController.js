@@ -2,6 +2,8 @@ const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 
 module.exports = {
+
+  /** This promise returns the user that is created in db. */
   signup: params => {
     return new Promise((resolve, reject) => {
       User.findOne({ email: params.email })
@@ -36,5 +38,36 @@ module.exports = {
         })
         .catch(err => reject(err));
     });
+  },
+
+  login: params => {
+    return new Promise((resolve, reject) => {
+      User.findOne({ email: params.email })
+        .then(user => {
+          if (!user) {
+            let errors = {};
+            errors.message = 'User is not found';
+            errors.status = 400;
+
+            reject(errors);
+          } else {
+            const newUser = new User();
+            newUser.profile.name = params.name;
+            newUser.password.name = params.password;
+            newUser.email = params.email;
+            bcrypt.genSalt(10, (err, salt) => {
+              bcrypt.hash(newUser.password, salt, (err, hash) => {
+                if (err) {
+                  reject(err);
+                } else {
+                  newUser.password = hash
+                  resolve(newUser);
+                }
+              })
+            })
+          }
+        })
+        .catch(err => reject(err));
+    })
   }
 };
