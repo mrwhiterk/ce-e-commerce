@@ -21,7 +21,7 @@ let UserSchema = new mongoose.Schema({
   },
   timestamp: {
     type: String,
-    default: () => moment().format('dddd, MMMM Do YYYY, h:mm:ss a');
+    default: () => moment().format('dddd, MMMM Do YYYY, h:mm:ss a')
   }
 })
 
