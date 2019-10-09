@@ -16,44 +16,34 @@ router.get('/signup', (req, res) => {
 router.post('/signup', authChecker, (req, res, next) => {
   let errors = req.validationErrors();
   
-    console.log('users.js 19: errors ', errors)
-    if (errors) {
-      res.render('auth/signup', {
-        errors,
-        successMessage: false,
-        user: req.body
-      });
-    } else {
-      next();
-    }
-  
-  }, (req, res) => {
   userController
     .signup(req.body)
-    .then(user => {
+    .then(() => {
       res.redirect('/');
     })
     .catch(error => {
-      res.render('auth/signup', { errors: [error] })
+      errors = errors.concat(error);
+      res.render('auth/signup', { errors });
     });
+  
 });
 
 /* render login form */
 router.get('/login', (req, res) => {
   res.render('auth/login', { errors: [] });
-})
+});
 
 /* submit login form */
-router.post('/login',(req, res) => {
+router.post('/login', (req, res) => {
   userController
     .login(req.body)
     .then(user => {
-      res.render('index', {successMessage: 'Successfully logged in'});
+      res.render('index', { successMessage: 'Successfully logged in' });
     })
     .catch(error => {
       console.log('error', error);
-      res.render('auth/login', { errors: [error] })
-    })
-})
+      res.render('auth/login', { errors: [error] });
+    });
+});
 
 module.exports = router;
