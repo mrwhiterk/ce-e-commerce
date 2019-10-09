@@ -53,7 +53,7 @@ module.exports = {
           } else {
             
             bcrypt.compare(params.password, user.password, function(err, r) {
-              console.log('r: ', r);
+
               if (!r) {
                 let errors = {};
                 errors.message = 'Compare failed';

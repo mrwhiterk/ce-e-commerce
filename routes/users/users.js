@@ -1,42 +1,58 @@
-var express = require('express');
-var router = express.Router();
+let express = require('express');
+let router = express.Router();
 
 const userController = require('./controllers/userController');
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+let authChecker = require('../../utils/authChecker');
 
+/* TODO: GET users listing. */
+
+/* render signup page */
 router.get('/signup', (req, res) => {
   res.render('auth/signup', { errors: [] });
 });
 
-router.post('/signup', (req, res) => {
+/* submit signup form */
+router.post('/signup', authChecker, (req, res, next) => {
+  let errors = req.validationErrors();
+  
+    console.log('users.js 19: errors ', errors)
+    if (errors) {
+      res.render('auth/signup', {
+        errors,
+        successMessage: false,
+        user: req.body
+      });
+    } else {
+      next();
+    }
+  
+  }, (req, res) => {
   userController
     .signup(req.body)
     .then(user => {
       res.redirect('/');
     })
     .catch(error => {
-      console.log('error: ', error)
-      res.render('auth/signup', { errors: error })
+      res.render('auth/signup', { errors: [error] })
     });
 });
 
+/* render login form */
 router.get('/login', (req, res) => {
   res.render('auth/login', { errors: [] });
 })
 
-router.post('/login', (req, res) => {
+/* submit login form */
+router.post('/login',(req, res) => {
   userController
     .login(req.body)
     .then(user => {
       res.render('index', {successMessage: 'Successfully logged in'});
     })
     .catch(error => {
-      console.log('error**: ', error)
-      res.render('auth/login', { errors: [error.message] })
+      console.log('error', error);
+      res.render('auth/login', { errors: [error] })
     })
 })
 

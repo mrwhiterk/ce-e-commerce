@@ -1,14 +1,16 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+let createError = require('http-errors');
+let express = require('express');
+let path = require('path');
+let cookieParser = require('cookie-parser');
+let logger = require('morgan');
 let mongoose = require('mongoose');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users/users');
+let indexRouter = require('./routes/index');
+let usersRouter = require('./routes/users/users');
 
-var app = express();
+let expressValidator = require('express-validator');
+
+let app = express();
 
 mongoose
   .connect('mongodb://localhost:27017/e-commerce', {
@@ -29,6 +31,26 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(
+  expressValidator({
+    errorFormatter: (param, message, value) => {
+      let namespace = param.split('.');
+      let root = namespace.shift();
+      let formParam = root;
+
+      while (namespace.length) {
+        formParam += `[${namespace.shift()}]`;
+      }
+
+      return {
+        param: formParam,
+        message,
+        value
+      };
+    }
+  })
+);
 
 app.use('/', indexRouter);
 app.use('/api/users', usersRouter);

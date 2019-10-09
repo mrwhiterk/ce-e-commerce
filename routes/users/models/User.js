@@ -5,11 +5,11 @@ const moment = require('moment');
 let UserSchema = new mongoose.Schema({
   email: {
     type: String,
-    default: ''
+    required: true
   },
   password: {
     type: String,
-    default: ''
+    required: true
   },
   profile: {
     name: { type: String, default: '' },
