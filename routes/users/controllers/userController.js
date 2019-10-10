@@ -3,43 +3,52 @@ const bcrypt = require('bcryptjs');
 
 module.exports = {
   /** This promise returns the user that is created in db */
-  signup: params => {
-    return new Promise((resolve, reject) => {
-      User.findOne({ email: params.email })
-        .then(user => {
-          if (user) {
-            // if user found return exist error
-            let errors = {};
-            errors.message = 'Email exists';
-            errors.status = 400;
+  signup: (req, res, next) => {
+    let errorValidate = req.validationErrors();
 
-            reject(errors);
-          } else {
-            const newUser = new User();
+    if (errorValidate) {
+      resolve.render('auth/signup', { errors: errorValidate });
 
-            newUser.password = params.password;
-            newUser.email = params.email;
-            
-            // salt the password 10 rounds and store it in newUser.password
-            bcrypt.genSalt(10, (err, salt) => {
-              bcrypt.hash(newUser.password, salt, (err, hash) => {
-                if (err) {
-                  reject(err);
-                } else {
-                  newUser.password = hash;
-                  
-                  // save new user to DB
-                  newUser
-                    .save()
-                    .then(user => resolve(user))
-                    .catch(err => reject(err));
-                }
-              });
+      return;
+    }
+
+    User.findOne({ email: req.body.email })
+      .then(user => {
+        console.log('user: ', user);
+
+        if (user) {
+          // if user found return exist error
+          let errors = {};
+          errors.message = 'Email exists';
+          errors.status = 400;
+
+          reject(errors);
+        } else {
+          const newUser = new User();
+
+          newUser.password = params.password;
+          newUser.email = params.email;
+          newUser.profile.name = params.name;
+
+          // salt the password 10 rounds and store it in newUser.password
+          bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(newUser.password, salt, (err, hash) => {
+              if (err) {
+                reject(err);
+              } else {
+                newUser.password = hash;
+
+                // save new user to DB
+                newUser
+                  .save()
+                  .then(user => resolve(user))
+                  .catch(err => reject(err));
+              }
             });
-          }
-        })
-        .catch(err => reject(err));
-    });
+          });
+        }
+      })
+      .catch(err => reject(err));
   },
 
   login: params => {

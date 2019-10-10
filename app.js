@@ -50,7 +50,7 @@ app.use(
     }),
     cookie: {
       secure: false,
-      maxAge: process.env.COOKIE_LENGTH
+      maxAge: 365 * 24 * 60 * 60 * 1000
     }
   })
 );
