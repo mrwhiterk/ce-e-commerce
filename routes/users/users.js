@@ -14,17 +14,26 @@ router.get('/signup', (req, res) => {
 
 /* submit signup form */
 router.post('/signup', authChecker, (req, res, next) => {
+  /* capture validations from authChecker */
   let errors = req.validationErrors();
   
-  userController
-    .signup(req.body)
-    .then(() => {
-      res.redirect('/');
-    })
-    .catch(error => {
-      errors = errors.concat(error);
-      res.render('auth/signup', { errors });
+  if (errors) {
+    res.render('auth/signup', {
+      errors,
+      successMessage: false
     });
+  } else {
+    // invoke signup promise and catch errors from auth checker, mongo, and controller at once.
+    userController
+      .signup(req.body)
+      .then(() => {
+        res.redirect('/');
+      })
+      .catch(error => {
+        errors = errors.concat(error);
+        res.render('auth/signup', { errors });
+      });
+  }
   
 });
 
@@ -41,7 +50,6 @@ router.post('/login', (req, res) => {
       res.render('index', { successMessage: 'Successfully logged in' });
     })
     .catch(error => {
-      console.log('error', error);
       res.render('auth/login', { errors: [error] });
     });
 });
