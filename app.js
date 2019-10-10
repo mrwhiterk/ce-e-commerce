@@ -5,6 +5,7 @@ let cookieParser = require('cookie-parser');
 let logger = require('morgan');
 let mongoose = require('mongoose');
 const flash = require('connect-flash');
+const passport = require('passport');
 
 let indexRouter = require('./routes/index');
 let usersRouter = require('./routes/users/users');
@@ -14,7 +15,6 @@ const session = require('express-session');
 let MongoStore = require('connect-mongo')(session);
 
 let expressValidator = require('express-validator');
-
 let app = express();
 
 require('dotenv').config()
@@ -56,6 +56,11 @@ app.use(
 );
 
 app.use(flash())
+
+app.use(passport.initialize())
+app.use(passport.session())
+
+require('./lib/passport/passport')(passport)
 
 app.use(
   expressValidator({
