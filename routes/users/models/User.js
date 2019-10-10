@@ -6,25 +6,23 @@ let UserSchema = new mongoose.Schema(
   {
     email: {
       type: String,
-      required: true
+      required: [true, 'email is required'],
+      unique: true,
+      min: [5, 'email must be atleast 5 characters'],
+      max: 30
     },
     password: {
       type: String,
-      required: true
+      required: [true, 'password is required'],
+      min: [5, 'password must be atleast 5 characters']
     },
     profile: {
       name: { type: String },
       picture: { type: String }
     },
     address: {
-      type: String,
-      
+      type: String
     }
-
-    // timestamp: {
-    //   type: String,
-    //   default: () => moment().format('dddd, MMMM Do YYYY, h:mm:ss a')
-    // }
   },
   {
     timestamps: true

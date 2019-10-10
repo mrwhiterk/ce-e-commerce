@@ -30,8 +30,8 @@ router.post('/signup', authChecker, (req, res, next) => {
         res.redirect('/');
       })
       .catch(error => {
-        errors = errors.concat(error);
-        res.render('auth/signup', { errors });
+        console.log('error: ', error)
+        res.render('auth/signup', { errors: [error] });
       });
   }
   
