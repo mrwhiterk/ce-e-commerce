@@ -8,13 +8,13 @@ let UserSchema = new mongoose.Schema(
       type: String,
       required: [true, 'email is required'],
       unique: true,
-      min: [5, 'email must be atleast 5 characters'],
-      max: 30
+      minlength: [5, 'email must be atleast 5 characters'],
+      maxlength: 50
     },
     password: {
       type: String,
       required: [true, 'password is required'],
-      min: [5, 'password must be atleast 5 characters']
+      minlength: [5, 'password must be atleast 5 characters']
     },
     profile: {
       name: { type: String },
