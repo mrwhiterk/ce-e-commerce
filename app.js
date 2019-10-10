@@ -4,16 +4,23 @@ let path = require('path');
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
 let mongoose = require('mongoose');
+const flash = require('connect-flash');
 
 let indexRouter = require('./routes/index');
 let usersRouter = require('./routes/users/users');
+
+const session = require('express-session');
+
+let MongoStore = require('connect-mongo')(session);
 
 let expressValidator = require('express-validator');
 
 let app = express();
 
+require('dotenv').config()
+
 mongoose
-  .connect('mongodb://localhost:27017/e-commerce', {
+  .connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
@@ -31,6 +38,24 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(
+  session({
+    resave: true,
+    saveUninitialized: true,
+    secret: process.env.SESSION_SECRET,
+    store: new MongoStore({
+      url: process.env.MONGODB_URI,
+      autoReconnect: true
+    }),
+    cookie: {
+      secure: false,
+      maxAge: process.env.COOKIE_LENGTH
+    }
+  })
+);
+
+app.use(flash())
 
 app.use(
   expressValidator({

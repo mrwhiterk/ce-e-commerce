@@ -7,12 +7,17 @@
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
+    "connect-flash": "^0.1.1",
+    "connect-mongo": "^3.0.0",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
+    "dot-env": "0.0.1",
+    "dotenv": "^8.1.0",
     "ejs": "~2.6.1",
     "express": "~4.16.1",
-    "http-errors": "~1.6.3",
+    "express-session": "^1.16.2",
     "express-validator": "^5.3.1",
+    "http-errors": "~1.6.3",
     "moment": "^2.24.0",
     "mongoose": "^5.7.4",
     "morgan": "~1.9.1"

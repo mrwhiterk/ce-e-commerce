@@ -39,11 +39,14 @@ router.post('/signup', authChecker, (req, res, next) => {
 
 /* render login form */
 router.get('/login', (req, res) => {
+  req.flash('testError', 'some error');
   res.render('auth/login', { errors: [] });
 });
 
 /* submit login form */
 router.post('/login', (req, res) => {
+  console.log('data from flash ', req.flash('testError'));
+
   userController
     .login(req.body)
     .then(user => {
