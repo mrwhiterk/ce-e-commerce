@@ -18,7 +18,7 @@ module.exports = {
 
     User.findOne({ email: req.body.email })
       .then(user => {
-        console.log('user: ', user);
+
 
         if (user) {
           // if user found return exist error

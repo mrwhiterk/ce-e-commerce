@@ -34,7 +34,9 @@ router.post('/login', async (req, res) => {
   // console.log('data from flash ', req.flash('testError'));
 
   try {
+    
     let user = await userController.login(req.body);
+    console.log('user ', user)
     if (user) {
       res.render('index', { successMessage: 'Successfully logged in' });
     }
