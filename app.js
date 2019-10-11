@@ -50,17 +50,17 @@ app.use(
     }),
     cookie: {
       secure: false,
-      maxAge: 365 * 24 * 60 * 60 * 1000
+      maxAge: eval(process.env.COOKIE_LENGTH)
     }
   })
 );
 
 app.use(flash())
 
+require('./lib/passport/passport')(passport)
 app.use(passport.initialize())
 app.use(passport.session())
 
-require('./lib/passport/passport')(passport)
 
 app.use(
   expressValidator({

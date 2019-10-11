@@ -5,15 +5,19 @@ const userController = require('./controllers/userController');
 
 let authChecker = require('../../utils/authChecker');
 
-const signupValidation = require('./utils/signupValidation')
+const signupValidation = require('./utils/signupValidation');
 
 /* TODO: GET users listing. */
 
 /* render signup page */
 router.get('/signup', (req, res) => {
+  console.log(req.isAuthenticated());
   if (req.isAuthenticated()) return res.redirect('/');
-  
-  res.render('auth/signup', { errors: req.flash('errors'), errorMessage: null });
+
+  res.render('auth/signup', {
+    errors: req.flash('errors'),
+    errorMessage: null
+  });
 });
 
 /* submit signup form */

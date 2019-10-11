@@ -7,7 +7,7 @@ module.exports = {
     let errorValidate = req.validationErrors();
 
     if (errorValidate) {
-      resolve.render('auth/signup', { errors: errorValidate });
+      res.render('auth/signup', { errors: [], errorMessage: true, errorValidate: errorValidate });
 
       return;
     }
@@ -18,17 +18,16 @@ module.exports = {
 
         if (user) {
           // if user found return exist error
-          let errors = {};
-          errors.message = 'Email exists';
-          errors.status = 400;
-
-          reject(errors);
+          req.flash('error', 'User already exist');
+          
+          return res.redirect(301, '/api/users/signup');
+         
         } else {
           const newUser = new User();
 
-          newUser.password = params.password;
-          newUser.email = params.email;
-          newUser.profile.name = params.name;
+          newUser.password = req.body.password;
+          newUser.email = req.body.email;
+          newUser.profile.name = req.body.name;
 
           // salt the password 10 rounds and store it in newUser.password
           bcrypt.genSalt(10, (err, salt) => {
@@ -41,14 +40,27 @@ module.exports = {
                 // save new user to DB
                 newUser
                   .save()
-                  .then(user => resolve(user))
+                  .then(user => {
+                    req.login(user, (err) => {
+                      if (err) {
+                        res.status(400).json({
+                          confirmation: false,
+                          message: err
+                        })
+                      } else {
+                        res.redirect(301, '/')
+                      }
+                    })
+                  })
                   .catch(err => reject(err));
               }
             });
           });
         }
       })
-      .catch(err => reject(err));
+      .catch(err => {
+        throw err;
+      })
   },
 
   login: params => {
