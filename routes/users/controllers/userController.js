@@ -7,7 +7,11 @@ module.exports = {
     let errorValidate = req.validationErrors();
 
     if (errorValidate) {
-      res.render('auth/signup', { errors: [], errorMessage: true, errorValidate: errorValidate });
+      res.render('auth/signup', {
+        errors: [],
+        errorMessage: true,
+        errorValidate: errorValidate
+      });
 
       return;
     }
@@ -19,9 +23,8 @@ module.exports = {
         if (user) {
           // if user found return exist error
           req.flash('error', 'User already exist');
-          
+
           return res.redirect(301, '/api/users/signup');
-         
         } else {
           const newUser = new User();
 
@@ -41,16 +44,16 @@ module.exports = {
                 newUser
                   .save()
                   .then(user => {
-                    req.login(user, (err) => {
+                    req.login(user, err => {
                       if (err) {
                         res.status(400).json({
                           confirmation: false,
                           message: err
-                        })
+                        });
                       } else {
-                        res.redirect(301, '/')
+                        res.redirect(301, '/');
                       }
-                    })
+                    });
                   })
                   .catch(err => reject(err));
               }
@@ -60,9 +63,12 @@ module.exports = {
       })
       .catch(err => {
         throw err;
-      })
+      });
   },
-
+  /**
+   * Logs user into app
+   * @param {Object} params - Accepts params containing login info.
+   */
   login: params => {
     return new Promise((resolve, reject) => {
       User.findOne({ email: params.email })

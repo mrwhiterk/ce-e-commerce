@@ -11,7 +11,7 @@ const signupValidation = require('./utils/signupValidation');
 
 /* render signup page */
 router.get('/signup', (req, res) => {
-  console.log(req.isAuthenticated());
+  console.log('auth ', req.isAuthenticated());
   if (req.isAuthenticated()) return res.redirect('/');
 
   res.render('auth/signup', {
@@ -25,22 +25,22 @@ router.post('/signup', signupValidation, userController.signup);
 
 /* render login form */
 router.get('/login', (req, res) => {
-  req.flash('testError', 'some error');
+  // req.flash('testError', 'some error');
   res.render('auth/login', { errors: [] });
 });
 
 /* submit login form */
-router.post('/login', (req, res) => {
-  console.log('data from flash ', req.flash('testError'));
+router.post('/login', async (req, res) => {
+  // console.log('data from flash ', req.flash('testError'));
 
-  userController
-    .login(req.body)
-    .then(user => {
+  try {
+    let user = await userController.login(req.body);
+    if (user) {
       res.render('index', { successMessage: 'Successfully logged in' });
-    })
-    .catch(error => {
-      res.render('auth/login', { errors: [error] });
-    });
+    }
+  } catch (error) {
+    res.render('auth/login', { errors: [error] });
+  }
 });
 
 module.exports = router;
