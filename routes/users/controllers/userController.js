@@ -36,7 +36,8 @@ module.exports = {
           bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(newUser.password, salt, (err, hash) => {
               if (err) {
-                reject(err);
+                // reject(err);
+                console.log(err)
               } else {
                 newUser.password = hash;
 
@@ -55,7 +56,7 @@ module.exports = {
                       }
                     });
                   })
-                  .catch(err => reject(err));
+                  .catch(err => console.log(err));
               }
             });
           });
@@ -102,3 +103,4 @@ module.exports = {
     });
   }
 };
+

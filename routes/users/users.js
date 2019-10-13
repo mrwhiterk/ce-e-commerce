@@ -7,7 +7,7 @@ let authChecker = require('../../utils/authChecker');
 
 const signupValidation = require('./utils/signupValidation');
 
-/* TODO: GET users listing. */
+
 
 /* render signup page */
 router.get('/signup', (req, res) => {
@@ -34,7 +34,6 @@ router.post('/login', async (req, res) => {
   // console.log('data from flash ', req.flash('testError'));
 
   try {
-    
     let user = await userController.login(req.body);
     console.log('user ', user)
     if (user) {
