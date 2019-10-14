@@ -25,6 +25,8 @@ router.post('/signup', signupValidation, userController.signup);
 
 /* render login form */
 router.get('/login', (req, res) => {
+  if (req.isAuthenticated()) return res.redirect('/')
+
   // req.flash('testError', 'some error');
   res.render('auth/login', { errors: [] });
 });

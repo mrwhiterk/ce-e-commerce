@@ -76,7 +76,7 @@ module.exports = {
         .then(user => {
           if (!user) {
             let errors = {};
-            errors.message = 'User is not found';
+            errors.message = 'Invalid Username or Password';
             errors.status = 400;
 
             reject(errors);
@@ -88,7 +88,7 @@ module.exports = {
               if (!result) {
                 // no result, send failed message
                 let errors = {};
-                errors.message = 'Compare failed';
+                errors.message = 'Invalid Username or Password'
                 errors.status = 400;
 
                 reject(errors);
