@@ -1,0 +1,147 @@
+<% include ../partials/header %> <% include ../partials/nav %>
+
+<body>
+  <div class="container emp-profile">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="profile-img"></div>
+      </div>
+      <div class="col-md-6">
+        <div class="profile-head">
+          <h5></h5>
+
+          <p class="proile-rating">
+            RANKINGS :
+            <span>8/10</span>
+          </p>
+          <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+              <a
+                class="nav-link active"
+                id="home-tab"
+                data-toggle="tab"
+                href="#home"
+                role="tab"
+                aria-controls="home"
+                aria-selected="true"
+              >
+                About
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                id="profile-tab"
+                data-toggle="tab"
+                href="#profile"
+                role="tab"
+                aria-controls="profile"
+                aria-selected="false"
+              >
+                Edit Profile
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4"></div>
+      <div class="col-md-8">
+        <div class="tab-content profile-tab" id="myTabContent">
+          <div
+            class="tab-pane fade show active"
+            id="home"
+            role="tabpanel"
+            aria-labelledby="home-tab"
+          >
+          <% errors.forEach( error => { %>
+            <div
+              class="alert alert-danger alert-dismissible fade show"
+              role="alert"
+            >
+              <%= error %>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="alert"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          <% }) %>
+
+          <% success.forEach( message => { %>
+              <div
+                class="alert alert-primary alert-dismissible fade show"
+                role="alert"
+              >
+                <%= message %>
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="alert"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+            <% }) %>
+            <div class="row">
+              <div class="col-md-6">
+                <label>Name: </label>
+              </div>
+              <div class="col-md-6"><%= user.profile.name %></div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <label>Email: </label>
+              </div>
+              <div class="col-md-6"><%= user.email %></div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <label>Seller: </label>
+              </div>
+              <div class="col-md-6">
+                <p>Clothes and Whatever</p>
+              </div>
+            </div>
+          </div>
+          <div
+            class="tab-pane fade"
+            id="profile"
+            role="tabpanel"
+            aria-labelledby="profile-tab"
+          >
+            <form class="form-signin" method="POST" action="">
+
+            <label for="inputName" class="sr-only">Name</label>
+            <input type="text" id="inputName" class="form-control" placeholder="Name" name="name">
+
+            <br />
+            <label for="inputEmail" class="sr-only">Email address</label>
+            <input type="text" id="inputEmail" class="form-control" placeholder="Email address"  name="email">
+
+            <br />
+            <label for="inputAddress" class="sr-only">Address</label>
+            <input type="text" id="inputAddress" class="form-control" placeholder="Address" name="address">
+
+            <br />
+            <label for="inputPassword" class="sr-only">Password</label>
+            <input type="text" id="inputPassword" class="form-control" placeholder="Password" name="password">
+
+            <br />
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Update Profile</button>
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <% include ../partials/footer %>
+</body>

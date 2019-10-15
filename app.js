@@ -1,21 +1,21 @@
-let createError = require('http-errors');
-let express = require('express');
-let path = require('path');
-let cookieParser = require('cookie-parser');
-let logger = require('morgan');
-let mongoose = require('mongoose');
-const flash = require('connect-flash');
-const passport = require('passport');
+const createError = require('http-errors')
+let express = require('express')
+let path = require('path')
+let cookieParser = require('cookie-parser')
+let logger = require('morgan')
+let mongoose = require('mongoose')
+const flash = require('connect-flash')
+const passport = require('passport')
 
-let indexRouter = require('./routes/index');
-let usersRouter = require('./routes/users/users');
+let indexRouter = require('./routes/index')
+let usersRouter = require('./routes/users/users')
 
-const session = require('express-session');
+const session = require('express-session')
 
-let MongoStore = require('connect-mongo')(session);
+let MongoStore = require('connect-mongo')(session)
 
-let expressValidator = require('express-validator');
-let app = express();
+let expressValidator = require('express-validator')
+let app = express()
 
 require('dotenv').config()
 
@@ -26,18 +26,18 @@ mongoose
     useUnifiedTopology: true
   })
   .then(data => {
-    console.log('DB Connected');
+    console.log('DB Connected')
   })
-  .catch(err => console.log(err));
+  .catch(err => console.log(err))
 
 // view engine setup
-app.set('view engine', 'ejs');
+app.set('view engine', 'ejs')
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(logger('dev'))
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+app.use(cookieParser())
+app.use(express.static(path.join(__dirname, 'public')))
 
 app.use(
   session({
@@ -53,7 +53,7 @@ app.use(
       maxAge: eval(process.env.COOKIE_LENGTH)
     }
   })
-);
+)
 
 app.use(flash())
 
@@ -61,44 +61,52 @@ require('./lib/passport/passport')(passport)
 app.use(passport.initialize())
 app.use(passport.session())
 
-
 app.use(
   expressValidator({
     errorFormatter: (param, message, value) => {
-      let namespace = param.split('.');
-      let root = namespace.shift();
-      let formParam = root;
+      const namespace = param.split('.')
+      let root = namespace.shift()
+      let formParam = root
 
       while (namespace.length) {
-        formParam += `[${namespace.shift()}]`;
+        formParam += `[${namespace.shift()}]`
       }
 
       return {
         param: formParam,
         message,
         value
-      };
+      }
     }
   })
-);
+)
 
-app.use('/', indexRouter);
-app.use('/api/users', usersRouter);
+app.use((req, res, next) => {
+  res.locals.user = req.user
+  res.locals.errors = req.flash('errors')
+  res.locals.errorValidate = req.flash('errorValidate')
+  res.locals.loginMessage = req.flash('loginMessage')
+  res.locals.success = req.flash('success')
+  next()
+})
+
+app.use('/', indexRouter)
+app.use('/api/users', usersRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  next(createError(404));
-});
+  next(createError(404))
+})
 
 // error handler
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  res.locals.message = err.message
+  res.locals.error = req.app.get('env') === 'development' ? err : {}
 
   // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
+  res.status(err.status || 500)
+  res.render('error')
+})
 
-module.exports = app;
+module.exports = app

@@ -1,10 +1,48 @@
- <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
-  <h5 class="my-0 mr-md-auto font-weight-normal">Company name</h5>
-  <nav class="my-2 my-md-0 mr-md-3">
-    <a class="p-2 text-dark" href="#">Features</a>
-    <a class="p-2 text-dark" href="#">Enterprise</a>
-    <a class="p-2 text-dark" href="#">Support</a>
-    <a class="p-2 text-dark" href="#">Pricing</a>
-  </nav>
-  <a class="btn btn-outline-primary" href="/api/users/signup">Sign up</a>
-</div>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+  <a class="navbar-brand" href="/">Shop Immersives</a>
+  <a class="navbar-brand" href="/">Home</a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarCollapse"
+    aria-controls="navbarCollapse"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarCollapse">
+    <ul class="navbar-nav ml-auto">
+
+      
+      <form class="form-inline my-2 my-lg-0" action="/api/product/search" method="POST">
+        <input type="text" class="form-control mr=ms-2" placeholder="Search" aria-label="Search" name="q">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav ml-auto">
+          <% if (!user) { %>
+            <li class="nav-item">
+              <a href="/api/users/signup" class="nav-link">Sign Up<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+              <a href="/api/users/login" class="nav-link">Log In</a>
+            </li>
+          <% } else { %>
+            <li class="nav-item">
+              <a href="/api/users/edit-profile" class="nav-link">Signed in as <span style="color: orange;"><%= user.email %></span></a>
+            </li>
+            <li class="nav-item">
+              <a href="/api/users/logout" class="nav-link">Logout</a>
+            </li>
+          <% } %>
+        </ul>
+      </div>
+
+
+      
+    </ul>
+  </div>
+</nav>

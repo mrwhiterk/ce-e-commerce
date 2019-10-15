@@ -4,11 +4,8 @@ const bcrypt = require('bcryptjs')
 exports.signup = (req, res) => {
   const errorValidate = req.validationErrors()
   if (errorValidate) {
-    res.render('auth/signup', {
-      errors: [],
-      errorMessage: true,
-      errorValidate: errorValidate
-    })
+    req.flash('errors', errorValidate)
+    res.redirect('/api/users/signup')
     return
   }
   User.findOne({ email: req.body.email })
@@ -16,7 +13,7 @@ exports.signup = (req, res) => {
       if (user) {
         // if user found return exist error
         req.flash('error', 'User already exist')
-
+        
         return res.redirect(301, '/api/users/signup')
       } else {
         const newUser = new User()
@@ -27,9 +24,11 @@ exports.signup = (req, res) => {
 
         // salt the password 10 rounds and store it in newUser.password
         bcrypt.genSalt(10, (err, salt) => {
+          if (err) {
+            throw err
+          }
           bcrypt.hash(newUser.password, salt, (err, hash) => {
             if (err) {
-              // reject(err);
               console.log(err)
             } else {
               newUser.password = hash
@@ -72,6 +71,8 @@ exports.login = params => {
           reject(errors)
         } else {
           bcrypt.compare(params.password, user.password, function (err, result) {
+            if (err) throw err
+
             if (!result) {
               // no result, send failed message
               const errors = {}

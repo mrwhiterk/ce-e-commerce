@@ -1,19 +1,18 @@
 const express = require('express')
 const router = express.Router()
+const passport = require('passport')
 
 const userController = require('./controllers/userController')
 
-const authChecker = require('../../utils/authChecker')
+// const authChecker = require('../../utils/authChecker')
 
 const signupValidation = require('./utils/signupValidation')
 
 /* render signup page */
 router.get('/signup', (req, res) => {
-  console.log('auth ', req.isAuthenticated())
   if (req.isAuthenticated()) return res.redirect('/')
 
   res.render('auth/signup', {
-    errors: req.flash('errors'),
     errorMessage: null
   })
 })
@@ -25,23 +24,26 @@ router.post('/signup', signupValidation, userController.signup)
 router.get('/login', (req, res) => {
   if (req.isAuthenticated()) return res.redirect('/')
 
-  // req.flash('testError', 'some error');
-  res.render('auth/login', { errors: [] })
+  res.render('auth/login')
 })
 
 /* submit login form */
-router.post('/login', async (req, res) => {
-  // console.log('data from flash ', req.flash('testError'));
+router.post('/login', passport.authenticate('local-login', {
+  successRedirect: '/',
+  failureRedirect: '/api/users/login',
+  failureFlash: true
+}))
 
-  try {
-    const user = await userController.login(req.body)
-    console.log('user ', user)
-    if (user) {
-      res.render('index', { successMessage: 'Successfully logged in' })
-    }
-  } catch (error) {
-    res.render('auth/login', { errors: [error] })
-  }
+router.get('/logout', (req, res, next) => {
+  req.logOut()
+
+  res.redirect('/')
+})
+
+router.get('/edit', (req, res, next) => {
+  if (!req.isAuthenticated()) return res.redirect('/')
+
+  res.render('account/profile')
 })
 
 module.exports = router
