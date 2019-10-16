@@ -1,4 +1,4 @@
-<form class="form-signin" method="POST" action="/users/<%=user.id%>">
+<form class="form-signin" method="POST" action="/users/<%=user.id%>?_method=PUT">
 
   <label for="inputName" class="sr-only">Name</label>
   <input type="text" id="inputName" class="form-control" value="<%= user.profile.name %>" name="name">
@@ -13,7 +13,7 @@
 
   <br />
   <label for="inputPassword" class="sr-only">Password</label>
-  <input type="text" id="inputPassword" class="form-control" value="<%= user.password %>" name="password">
+  <input type="text" id="inputPassword" class="form-control" placeholder="change password" name="password">
 
   <br />
   <button class="btn btn-lg btn-primary btn-block" type="submit">Update Profile</button>

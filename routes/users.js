@@ -25,17 +25,17 @@ router.post('/login', loginValidation, passport.authenticate('local-login', {
   failureFlash: true
 }))
 
-router.get('/logout', (req, res, next) => {
+router.get('/logout', (req, res) => {
   req.logOut()
   res.redirect('/')
 })
 
-router.get('/edit', (req, res, next) => {
+router.get('/edit', (req, res) => {
   if (!req.isAuthenticated()) return res.redirect('/')
 
   res.render('account/profile')
 })
 
-router.post('/:id', userController.findUserAndUpdate)
+router.put('/:id', userController.findUserAndUpdate)
 
 module.exports = router

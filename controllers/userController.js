@@ -90,13 +90,11 @@ exports.login = params => {
 }
 
 exports.findUserAndUpdate = (req, res) => {
-  User.findById(req.params.id, (err, user) => {
-    if (err) throw new Error(err)
+  req.user.email = req.body.email || req.user.email
+  req.user.profile.name = req.body.name || req.user.profile.name
+  req.user.address = req.body.address || req.user.address
 
-    user.email = req.body.email
-    user.profile.name = req.body.name
-    user.address = req.body.address
-
+  if (req.body.password) {
     bcrypt.genSalt(10, (err, salt) => {
       if (err) {
         throw err
@@ -106,9 +104,9 @@ exports.findUserAndUpdate = (req, res) => {
           req.flash('errors', err)
           res.redirect('/users/edit')
         } else {
-          user.password = hash
+          req.user.password = hash
 
-          user.save((err, updatedUser) => {
+          req.user.save((err, updatedUser) => {
             if (err) {
               req.flash('errors', err)
               res.redirect('/users/edit')
@@ -120,7 +118,17 @@ exports.findUserAndUpdate = (req, res) => {
         }
       })
     })
-  })
+  } else {
+    req.user.save((err, updatedUser) => {
+      if (err) {
+        req.flash('errors', err)
+        res.redirect('/users/edit')
+      } else {
+        req.flash('success', 'successfully updated user')
+        res.redirect('/users/edit')
+      }
+    })
+  }
 }
 
 exports.isAuthenticated = (req, res, next) => {

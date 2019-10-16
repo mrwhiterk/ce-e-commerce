@@ -10,6 +10,7 @@ const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
 const expressValidator = require('express-validator')
 const app = express()
+const methodOverride = require('method-override')
 
 require('dotenv').config()
 require('./db')
@@ -22,6 +23,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
+app.use(methodOverride('_method'))
 
 app.use(
   session({
