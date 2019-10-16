@@ -12,8 +12,16 @@
   <input type="text" id="inputAddress" class="form-control" value="<%= user.address %>" name="address">
 
   <br />
-  <label for="inputPassword" class="sr-only">Password</label>
-  <input type="text" id="inputPassword" class="form-control" value="<%= user.password %>" name="password">
+  <label for="inputPassword">Old Password</label>
+  <input type="text" id="inputPassword" class="form-control" name="oldPassword">
+
+  <br />
+  <label for="inputPassword">New Password</label>
+  <input type="text" id="inputPassword" class="form-control" name="password">
+
+  <br />
+  <label for="inputPassword">New Password(Again)</label>
+  <input type="text" id="inputPassword" class="form-control" name="password">
 
   <br />
   <button class="btn btn-lg btn-primary btn-block" type="submit">Update Profile</button>

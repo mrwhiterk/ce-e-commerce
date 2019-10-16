@@ -5,8 +5,8 @@ router.get('/', (req, res) => {
   res.render('products/addCategory')
 })
 
-router.post('/addCategory', (req, res) => {
-  res.send('add cate')
+router.post('/', (req, res) => {
+  res.send('add category goes here')
 })
 
 module.exports = router

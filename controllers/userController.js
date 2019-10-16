@@ -94,10 +94,23 @@ exports.login = params => {
 exports.findUserAndUpdate = async (req, res) => {
   req.user.email = req.body.email || req.user.email
   req.user.profile.name = req.body.name || req.user.profile.name
-  req.user.address = req.body.address || req.user.address 
+  req.user.address = req.body.address || req.user.address
 
-  if (req.body.password) {
-    req.user.password = await hasher(req.body.password, req) || req.user.password
+  let oldPasswordMatches = false
+  try {
+    oldPasswordMatches = await bcrypt.compare(req.body.oldPassword, req.user.password)
+  } catch (err) {
+    req.flash('errors', err)
+  }
+
+  if (oldPasswordMatches && req.body.password[0] === req.body.password[1]) {
+    const oldPassword = req.user.password
+    req.user.password = await hasher(req.body.password[0], req) || oldPassword
+    if (req.user.password !== oldPassword) {
+      req.flash('success', 'successfully updated user password')
+    }
+  } else {
+    req.flash('errors', 'Invalid password: not updated')
   }
 
   req.user.save((err, updatedUser) => {

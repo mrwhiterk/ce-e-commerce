@@ -6,7 +6,7 @@ async function cryptIt (password, req) {
     const hash = await bcrypt.hash(password, salt)
     return hash
   } catch (err) {
-    req.flash('errors', err)
+    req.flash('errors', 'error from hash: ' + err)
   }
 }
 
