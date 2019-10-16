@@ -3,32 +3,16 @@ const express = require('express')
 const path = require('path')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
-const mongoose = require('mongoose')
 const flash = require('connect-flash')
 const passport = require('passport')
-
-const indexRouter = require('./routes')
-const usersRouter = require('./routes/users')
-
+const { indexRouter, usersRouter } = require('./routes')
 const session = require('express-session')
-
 const MongoStore = require('connect-mongo')(session)
-
 const expressValidator = require('express-validator')
 const app = express()
 
 require('dotenv').config()
-
-mongoose
-  .connect(process.env.MONGODB_URI, {
-    useNewUrlParser: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true
-  })
-  .then(data => {
-    console.log('DB Connected')
-  })
-  .catch(err => console.log(err))
+require('./db')
 
 // view engine setup
 app.set('view engine', 'ejs')
@@ -84,8 +68,8 @@ app.use(
 app.use((req, res, next) => {
   res.locals.user = req.user
   res.locals.errors = req.flash('errors')
-  res.locals.errorValidate = req.flash('errorValidate')
   res.locals.success = req.flash('success')
+
   next()
 })
 
@@ -93,12 +77,12 @@ app.use('/', indexRouter)
 app.use('/users', usersRouter)
 
 // catch 404 and forward to error handler
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   next(createError(404))
 })
 
 // error handler
-app.use(function (err, req, res, next) {
+app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message
   res.locals.error = req.app.get('env') === 'development' ? err : {}

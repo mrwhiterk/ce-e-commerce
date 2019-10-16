@@ -1,9 +1,10 @@
-var express = require('express')
-var router = express.Router()
+const express = require('express')
+const indexRouter = express.Router()
+const usersRouter = require('./users')
 
 /* GET home page. */
-router.get('/', (req, res) => {
+indexRouter.get('/', (req, res) => {
   res.render('index')
 })
 
-module.exports = router
+module.exports = { indexRouter, usersRouter }
