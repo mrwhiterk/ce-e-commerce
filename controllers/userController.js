@@ -1,6 +1,7 @@
 const User = require('../models/User')
 const bcrypt = require('bcryptjs')
 const hasher = require('../utils/hasher')
+const gravatar = require('../utils/gravatar')
 
 exports.signup = (req, res) => {
   const errorValidate = req.validationErrors()
@@ -20,7 +21,7 @@ exports.signup = (req, res) => {
         newUser.password = req.body.password
         newUser.email = req.body.email
         newUser.profile.name = req.body.name
-
+        newUser.profile.picture = gravatar(newUser.email)
         // salt the password 10 rounds and store it in newUser.password
         bcrypt.genSalt(10, (err, salt) => {
           if (err) {
@@ -93,7 +94,7 @@ exports.login = params => {
 exports.findUserAndUpdate = async (req, res) => {
   req.user.email = req.body.email || req.user.email
   req.user.profile.name = req.body.name || req.user.profile.name
-  req.user.address = req.body.address || req.user.address
+  req.user.address = req.body.address || req.user.address 
 
   if (req.body.password) {
     req.user.password = await hasher(req.body.password, req) || req.user.password

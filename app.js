@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 const flash = require('connect-flash')
 const passport = require('passport')
-const { indexRouter, usersRouter } = require('./routes')
+const { indexRouter, usersRouter, productsRouter, adminsRouter } = require('./routes')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
 const expressValidator = require('express-validator')
@@ -77,6 +77,8 @@ app.use((req, res, next) => {
 
 app.use('/', indexRouter)
 app.use('/users', usersRouter)
+app.use('/products', productsRouter)
+app.use('/admins', adminsRouter)
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
