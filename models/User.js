@@ -16,10 +16,11 @@ const UserSchema = new mongoose.Schema(
     },
     profile: {
       name: { type: String },
-      picture: { type: String }
+      picture: { type: String, default: '' }
     },
     address: {
-      type: String
+      type: String,
+      default: ''
     }
   },
   {

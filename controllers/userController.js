@@ -90,18 +90,35 @@ exports.login = params => {
 }
 
 exports.findUserAndUpdate = (req, res) => {
-  const body = {
-    email: req.body.email,
-    password: req.body.password,
-    profile: { name: req.body.name },
-    address: req.body.address
-  }
+  User.findById(req.params.id, (err, user) => {
+    if (err) throw new Error(err)
 
-  User.findByIdAndUpdate(req.params.id, body, (err, updatedUser) => {
-    if (err) {
-      throw new Error(err)
-    } else {
-      res.redirect('/users/edit')
-    }
+    user.email = req.body.email
+    user.profile.name = req.body.name
+    user.address = req.body.address
+
+    bcrypt.genSalt(10, (err, salt) => {
+      if (err) {
+        throw err
+      }
+      bcrypt.hash(req.body.password, salt, (err, hash) => {
+        if (err) {
+          req.flash('errors', err)
+          res.redirect('/users/edit')
+        } else {
+          user.password = hash
+
+          user.save((err, updatedUser) => {
+            if (err) {
+              req.flash('errors', err)
+              res.redirect('/users/edit')
+            } else {
+              req.flash('success', 'successfully updated user')
+              res.redirect('/users/edit')
+            }
+          })
+        }
+      })
+    })
   })
 }
