@@ -36,6 +36,6 @@ router.get('/edit', (req, res) => {
   res.render('account/profile')
 })
 
-router.put('/:id', userController.findUserAndUpdate)
+router.put('/editUser', userController.findUserAndUpdate)
 
 module.exports = router
