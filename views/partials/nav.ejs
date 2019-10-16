@@ -1,48 +1,72 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
   <a class="navbar-brand" href="/">Shop Immersives</a>
-  <a class="navbar-brand" href="/">Home</a>
   <button
     class="navbar-toggler"
     type="button"
     data-toggle="collapse"
-    data-target="#navbarCollapse"
-    aria-controls="navbarCollapse"
+    data-target="#navbarsExampleDefault"
+    aria-controls="navbarsExampleDefault"
     aria-expanded="false"
     aria-label="Toggle navigation"
   >
     <span class="navbar-toggler-icon"></span>
   </button>
+
+  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/">
+          Home
+          <span class="sr-only">(current)</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <form
+    class="form-inline my-2 my-lg0"
+    action="/product/search"
+    method="POST"
+  >
+    <input
+      class="form-control mr-ms-2"
+      type="text"
+      placeholder="Search"
+      aria-label="Search"
+      name="q"
+    />
+    <button class="btn btn-outline-success my-2my-sm-0" type="submit">
+      Search
+    </button>
+  </form>
+
   <div class="collapse navbar-collapse" id="navbarCollapse">
     <ul class="navbar-nav ml-auto">
-
-      
-      <form class="form-inline my-2 my-lg-0" action="/api/product/search" method="POST">
-        <input type="text" class="form-control mr=ms-2" placeholder="Search" aria-label="Search" name="q">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form>
-
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav ml-auto">
-          <% if (!user) { %>
-            <li class="nav-item">
-              <a href="/api/users/signup" class="nav-link">Sign Up<span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a href="/api/users/login" class="nav-link">Log In</a>
-            </li>
-          <% } else { %>
-            <li class="nav-item">
-              <a href="/api/users/edit-profile" class="nav-link">Signed in as <span style="color: orange;"><%= user.email %></span></a>
-            </li>
-            <li class="nav-item">
-              <a href="/api/users/logout" class="nav-link">Logout</a>
-            </li>
-          <% } %>
-        </ul>
-      </div>
-
-
-      
+      <% if (!user) { %>
+      <li class="nav-item">
+        <a href="/users/signup" class="nav-link">
+          Sign up
+          <span class="sr-only">(current)</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/users/login" class="nav-link">Sign in</a>
+      </li>
+      <% } else { %>
+      <li class="nav-item">
+        <a href="/users/edit" class="nav-link">
+          Logged in as
+          <span style="color: pink"><%= user.profile.name %></span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="/users/logout" class="nav-link">Log out</a>
+      </li>
+      <% } %>
     </ul>
   </div>
 </nav>
+<br>
+<br>
+<br>
+

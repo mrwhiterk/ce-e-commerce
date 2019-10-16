@@ -1,33 +1,21 @@
+  
 body {
   padding: 50px;
-  padding: 0px;
-  font: 14px 'Lucida Grande', Helvetica, Arial, sans-serif;
-  background: -webkit-linear-gradient(left, #3931af, #00ffff)
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background: -webkit-linear-gradient(left, black, rgb(255, 196, 208));
 }
-
-a {
-  color: #00b7ff;
-}
-
-.navbar {
-  display: block;
-  width: 100vw;
-  margin-top: 0;
-}
-
-/* body {
-  padding: 50px;
-  background: -webkit-linear-gradient(left, #3931af, #00c6ff)
-} */
 
 .row {
     padding-bottom: 25px;
 }
 
-.card {
+.card{
     width: 18rem;
     margin-bottom: 10px;
     margin-top: 10px;
-    min-height: 430px;
+    min-height: 400px;
 }
 
+a {
+  color: #00B7FF;
+}

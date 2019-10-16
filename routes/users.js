@@ -1,20 +1,15 @@
 const express = require('express')
 const router = express.Router()
 const passport = require('passport')
-
-const userController = require('./controllers/userController')
-
-// const authChecker = require('../../utils/authChecker')
-
-const signupValidation = require('./utils/signupValidation')
+const userController = require('../controllers/userController')
+const signupValidation = require('../utils/signupValidation')
 
 /* render signup page */
 router.get('/signup', (req, res) => {
   if (req.isAuthenticated()) return res.redirect('/')
 
-  res.render('auth/signup', {
-    errorMessage: null
-  })
+  console.log(res.locals)
+  res.render('auth/signup')
 })
 
 /* submit signup form */
@@ -30,13 +25,12 @@ router.get('/login', (req, res) => {
 /* submit login form */
 router.post('/login', passport.authenticate('local-login', {
   successRedirect: '/',
-  failureRedirect: '/api/users/login',
+  failureRedirect: '/users/login',
   failureFlash: true
 }))
 
 router.get('/logout', (req, res, next) => {
   req.logOut()
-
   res.redirect('/')
 })
 
@@ -45,5 +39,7 @@ router.get('/edit', (req, res, next) => {
 
   res.render('account/profile')
 })
+
+router.post('/:id', userController.findUserAndUpdate)
 
 module.exports = router

@@ -10,16 +10,16 @@
   </div>
 <% }) %>
 
-<form class="form-signin" method="POST" action="/api/users/login">
+<form class="form-signin" method="POST" action="/users/login">
           
-          <% for (let i = 0; i < errors.length; i++) {%>
+          <% errors.forEach( error => { %>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                   <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <%= errors[i].message || errors[i] %>
+                <%= error.message || error %>
             </div>
-          <% } %>
+          <% }) %>
         
 
         <h1 class="h3 mb-3 font-weight-normal">Login</h1>
