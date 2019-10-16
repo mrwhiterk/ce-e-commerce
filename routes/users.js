@@ -6,10 +6,7 @@ const signupValidation = require('../utils/signupValidation')
 const loginValidation = require('../utils/loginValidation')
 
 /* render signup page */
-router.get('/signup', (req, res) => {
-  if (req.isAuthenticated()) return res.redirect('/')
-
-  console.log(res.locals)
+router.get('/signup', userController.isAuthenticated, (req, res) => {
   res.render('auth/signup')
 })
 
@@ -17,9 +14,7 @@ router.get('/signup', (req, res) => {
 router.post('/signup', signupValidation, userController.signup)
 
 /* render login form */
-router.get('/login', (req, res) => {
-  if (req.isAuthenticated()) return res.redirect('/')
-
+router.get('/login', userController.isAuthenticated, (req, res) => {
   res.render('auth/login')
 })
 
