@@ -1,5 +1,6 @@
 const User = require('../models/User')
 const bcrypt = require('bcryptjs')
+const hasher = require('../utils/hasher')
 
 exports.signup = (req, res) => {
   const errorValidate = req.validationErrors()
@@ -89,46 +90,24 @@ exports.login = params => {
   })
 }
 
-exports.findUserAndUpdate = (req, res) => {
+exports.findUserAndUpdate = async (req, res) => {
   req.user.email = req.body.email || req.user.email
   req.user.profile.name = req.body.name || req.user.profile.name
   req.user.address = req.body.address || req.user.address
 
   if (req.body.password) {
-    bcrypt.genSalt(10, (err, salt) => {
-      if (err) {
-        throw err
-      }
-      bcrypt.hash(req.body.password, salt, (err, hash) => {
-        if (err) {
-          req.flash('errors', err)
-          res.redirect('/users/edit')
-        } else {
-          req.user.password = hash
-
-          req.user.save((err, updatedUser) => {
-            if (err) {
-              req.flash('errors', err)
-              res.redirect('/users/edit')
-            } else {
-              req.flash('success', 'successfully updated user')
-              res.redirect('/users/edit')
-            }
-          })
-        }
-      })
-    })
-  } else {
-    req.user.save((err, updatedUser) => {
-      if (err) {
-        req.flash('errors', err)
-        res.redirect('/users/edit')
-      } else {
-        req.flash('success', 'successfully updated user')
-        res.redirect('/users/edit')
-      }
-    })
+    req.user.password = await hasher(req.body.password, req) || req.user.password
   }
+
+  req.user.save((err, updatedUser) => {
+    if (err) {
+      req.flash('errors', err)
+      res.redirect('/users/edit')
+    } else {
+      req.flash('success', 'successfully updated user')
+      res.redirect('/users/edit')
+    }
+  })
 }
 
 exports.isAuthenticated = (req, res, next) => {
