@@ -2,24 +2,20 @@ const User = require('../models/User')
 const bcrypt = require('bcryptjs')
 
 exports.signup = (req, res) => {
-  console.log('hit')
   const errorValidate = req.validationErrors()
   if (errorValidate) {
     req.flash('errors', errorValidate)
     res.redirect('/users/signup')
-    console.log('a')
     return
   }
   User.findOne({ email: req.body.email })
     .then(user => {
       if (user) {
         // if user found return exist error
-        console.log('b')
         req.flash('errors', 'User already exist')
         return res.redirect(301, '/users/signup')
       } else {
         const newUser = new User()
-        console.log('newUser')
         newUser.password = req.body.password
         newUser.email = req.body.email
         newUser.profile.name = req.body.name
@@ -41,13 +37,11 @@ exports.signup = (req, res) => {
                 .then(user => {
                   req.login(user, err => {
                     if (err) {
-                      console.log('d')
                       res.status(400).json({
                         confirmation: false,
                         message: err
                       })
                     } else {
-                      console.log('c')
                       res.redirect(301, '/')
                     }
                   })
@@ -74,7 +68,7 @@ exports.login = params => {
 
           reject(errors)
         } else {
-          bcrypt.compare(params.password, user.password, function(err, result) {
+          bcrypt.compare(params.password, user.password, (err, result) => {
             if (err) throw err
 
             if (!result) {

@@ -1,9 +1,9 @@
 module.exports = (req, res, next) => {
-  emailChecker(req);
-  passwordChecker(req);
-  
-  next();
-};
+  emailChecker(req)
+  passwordChecker(req)
+
+  next()
+}
 
 // created all the checks for fields on registration
 
@@ -13,8 +13,8 @@ const emailChecker = email => {
     .notEmpty()
     .withMessage('email field cannot be empty')
     .isEmail()
-    .withMessage('Please enter a valid email');
-};
+    .withMessage('Please enter a valid email')
+}
 
 const passwordChecker = password => {
   password
@@ -26,7 +26,7 @@ const passwordChecker = password => {
     )
     .withMessage(
       'Password must be atleast 5 characters, at least one uppercase letter, one lower case, one number, one special char'
-    );
+    )
 
   // password
   //   .check('password2')
@@ -34,4 +34,4 @@ const passwordChecker = password => {
   //   .withMessage('Confirm password cannot be empty')
   //   .equals(password.body.password)
   //   .withMessage('Password must match');
-};
+}

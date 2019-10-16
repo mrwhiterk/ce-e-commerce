@@ -3,6 +3,7 @@ const router = express.Router()
 const passport = require('passport')
 const userController = require('../controllers/userController')
 const signupValidation = require('../utils/signupValidation')
+const loginValidation = require('../utils/loginValidation')
 
 /* render signup page */
 router.get('/signup', (req, res) => {
@@ -23,7 +24,7 @@ router.get('/login', (req, res) => {
 })
 
 /* submit login form */
-router.post('/login', passport.authenticate('local-login', {
+router.post('/login', loginValidation, passport.authenticate('local-login', {
   successRedirect: '/',
   failureRedirect: '/users/login',
   failureFlash: true
