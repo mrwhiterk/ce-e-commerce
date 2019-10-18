@@ -19,7 +19,7 @@ router.get('/login', userController.isAuthenticated, (req, res) => {
 })
 
 /* submit login form */
-router.post('/login', loginValidation, userController.login)
+router.post('/login', loginValidation, userController.login2)
 
 router.get('/logout', (req, res) => {
   req.logOut()

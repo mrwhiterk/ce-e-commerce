@@ -60,8 +60,8 @@ exports.signup = (req, res) => {
 }
 
 exports.login = (req, res) => {
+  const refuse = () => res.redirect('/users/login')
   User.findOne({ email: req.body.email }, (err, user) => {
-    const refuse = () => res.redirect('/users/login')
     if (err) {
       req.flash('errors', err)
       refuse()
@@ -92,6 +92,45 @@ exports.login = (req, res) => {
           }
         })
       }
+    }
+  })
+}
+
+exports.login2 = async (req, res) => {
+  const refuse = () => res.redirect('/users/login')
+
+  try {
+    var user = await User.findOne({ email: req.body.email })
+  } catch (err) {
+    req.flash('errors', err)
+    return refuse()
+  }
+
+  // if user is false (no user found)
+  if (!user) {
+    req.flash('errors', 'user does not exist')
+    return refuse()
+  }
+
+  try {
+    var passwordMatches = await bcrypt.compare(req.body.password, user.password)
+  } catch (err) {
+    req.flash('errors', err)
+    return refuse()
+  }
+
+  if (!passwordMatches) {
+    req.flash('errors', 'passwords do not match')
+    return refuse()
+  }
+
+  req.login(user, err => {
+    if (err) {
+      req.flash('errors', 'internal login err')
+      refuse()
+    } else {
+      req.flash('success', 'Welcome back ' + req.user.profile.name)
+      res.redirect('/')
     }
   })
 }
