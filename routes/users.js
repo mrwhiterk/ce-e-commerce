@@ -32,7 +32,6 @@ router.get('/logout', (req, res) => {
 
 router.get('/edit', (req, res) => {
   if (!req.isAuthenticated()) return res.redirect('/')
-  console.log('res locals ', res.locals)
   res.render('account/profile')
 })
 

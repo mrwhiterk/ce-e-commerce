@@ -1,0 +1,27 @@
+<% include ../partials/account %>
+<% include ../partials/nav %>
+
+    <% success.map(success => { %>
+    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+      <button
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <%= success %>
+    </div>
+    <% }) %>
+    <ul class="list-group">
+      <% categories.map(category => { %>
+      <li class="list-group-item">
+        <% let link = `${category.name}/${category.id}` %>
+        <a href="<%= `/admins/create-fake-product/${link}`%>"><%= category.name %></a>
+      </li>
+      <% }) %>
+    </ul>
+
+<% include ../partials/footer %>
+

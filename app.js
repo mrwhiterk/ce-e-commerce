@@ -5,12 +5,18 @@ const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 const flash = require('connect-flash')
 const passport = require('passport')
-const { indexRouter, usersRouter, productsRouter, adminsRouter } = require('./routes')
+const {
+  indexRouter,
+  usersRouter,
+  productsRouter,
+  adminsRouter
+} = require('./routes')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
 const expressValidator = require('express-validator')
 const app = express()
 const methodOverride = require('method-override')
+const Category = require('./models/Category')
 
 require('dotenv').config()
 require('./db')
@@ -72,6 +78,15 @@ app.use((req, res, next) => {
   res.locals.errors = req.flash('errors')
   res.locals.success = req.flash('success')
 
+  next()
+})
+
+app.use(async (req, res, next) => {
+  try {
+    res.locals.categories = await Category.find()
+  } catch (err) {
+    req.flash('errors', err)
+  }
   next()
 })
 

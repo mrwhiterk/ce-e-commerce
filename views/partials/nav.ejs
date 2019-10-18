@@ -20,14 +20,29 @@
           <span class="sr-only">(current)</span>
         </a>
       </li>
+      <li class="nav-item">
+        <div class="dropdown">
+          <button
+            class="btn btn-secondary dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            Categories
+          </button>
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <% categories.map( category => { %>
+            <a class="dropdown-item" href=""><%= category.name %></a>
+            <% }) %>
+          </div>
+        </div>
+      </li>
     </ul>
   </div>
 
-  <form
-    class="form-inline my-2 my-lg0"
-    action="/product/search"
-    method="POST"
-  >
+  <form class="form-inline my-2 my-lg0" action="/product/search" method="POST">
     <input
       class="form-control mr-ms-2"
       type="text"
@@ -66,7 +81,6 @@
     </ul>
   </div>
 </nav>
-<br>
-<br>
-<br>
-
+<br />
+<br />
+<br />

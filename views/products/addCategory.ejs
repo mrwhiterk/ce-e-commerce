@@ -1,34 +1,36 @@
-<% include ../partials/account %> 
-<% include ../partials/nav %>
+<% include ../partials/account %> <% include ../partials/nav %>
 
+<form class="form-signin" method="POST" action="/admins">
+  <% errors.map(error => { %>
+  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <%= error.message || error %>
+  </div>
+  <% }) %>
+  <% success.map(success => { %>
+  <div class="alert alert-primary alert-dismissible fade show" role="alert">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <%= success.message || success %>
+  </div>
+  <% }) %>
 
-<form class="form-signin" method="POST" action="/admins/addCategory">
+  <h1 class="h3 mb-3 font-weight-normal">Enter category name</h1>
 
+  <label for="inputName" class="sr-only">Category Name</label>
+  <input
+    type="text"
+    id="inputName"
+    class="form-control"
+    placeholder="Category"
+    name="name"
+  />
 
-        <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-
-
-
-        <div class="alert alert-primary alert-dismissible fade show" role="alert">
-            
-              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-
-
-    <h1 class="h3 mb-3 font-weight-normal">Enter category name</h1>
-
-    <label for="inputName" class="sr-only">Category Name</label>
-    <input type="text" id="inputName" class="form-control" placeholder="Category" name="name">
-
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Create</button>
-    <p class="mt-5 mb-3 text-muted">&copy; 2017-2019</p>
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Create</button>
+  <p class="mt-5 mb-3 text-muted">&copy; 2017-2019</p>
 </form>
 
-<% include ../partials/footer %> 
+<% include ../partials/footer %>

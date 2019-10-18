@@ -96,16 +96,25 @@ exports.findUserAndUpdate = async (req, res) => {
   req.user.profile.name = req.body.name || req.user.profile.name
   req.user.address = req.body.address || req.user.address
 
+  // start
+
   let oldPasswordMatches = false
   try {
-    oldPasswordMatches = await bcrypt.compare(req.body.oldPassword, req.user.password)
+    oldPasswordMatches = await bcrypt.compare(
+      req.body.oldPassword,
+      req.user.password
+    )
   } catch (err) {
     req.flash('errors', err)
   }
 
-  if (oldPasswordMatches && req.body.password[0] === req.body.password[1]) {
+  if (
+    oldPasswordMatches &&
+    req.body.password[0].length > 0 &&
+    req.body.password[0] === req.body.password[1]
+  ) {
     const oldPassword = req.user.password
-    req.user.password = await hasher(req.body.password[0], req) || oldPassword
+    req.user.password = (await hasher(req.body.password[0])) || oldPassword
     if (req.user.password !== oldPassword) {
       req.flash('success', 'successfully updated user password')
     }
@@ -113,14 +122,15 @@ exports.findUserAndUpdate = async (req, res) => {
     req.flash('errors', 'Invalid password: not updated')
   }
 
+  // end
+
   req.user.save((err, updatedUser) => {
     if (err) {
       req.flash('errors', err)
-      res.redirect('/users/edit')
     } else {
-      req.flash('success', 'successfully updated user')
-      res.redirect('/users/edit')
+      req.flash('success', 'successfully updated ' + updatedUser.profile.name)
     }
+    res.redirect('/users/edit')
   })
 }
 
