@@ -59,35 +59,40 @@ exports.signup = (req, res) => {
     })
 }
 
-exports.login = params => {
-  return new Promise((resolve, reject) => {
-    User.findOne({ email: params.email })
-      .then(user => {
-        if (!user) {
-          const errors = {}
-          errors.message = 'Invalid Username or Password'
-          errors.status = 400
-
-          reject(errors)
-        } else {
-          bcrypt.compare(params.password, user.password, (err, result) => {
-            if (err) throw err
-
+exports.login = (req, res) => {
+  User.findOne({ email: req.body.email }, (err, user) => {
+    const refuse = () => res.redirect('/users/login')
+    if (err) {
+      req.flash('errors', err)
+      refuse()
+    } else {
+      if (!user) {
+        req.flash('errors', 'user does not exist')
+        refuse()
+      } else {
+        bcrypt.compare(req.body.password, user.password, (err, result) => {
+          if (err) {
+            req.flash('errors', err)
+            refuse()
+          } else {
             if (!result) {
-              // no result, send failed message
-              const errors = {}
-              errors.message = 'Invalid Username or Password'
-              errors.status = 400
-
-              reject(errors)
+              req.flash('errors', 'passwords do not match')
+              refuse()
             } else {
-              // pass success in the form of valid user
-              resolve(user)
+              req.login(user, err => {
+                if (err) {
+                  req.flash('errors', err)
+                  refuse()
+                } else {
+                  req.flash('success', 'Welcome back ' + req.user.profile.name)
+                  res.redirect('/')
+                }
+              })
             }
-          })
-        }
-      })
-      .catch(err => reject(err))
+          }
+        })
+      }
+    }
   })
 }
 
@@ -133,6 +138,5 @@ exports.findUserAndUpdate = async (req, res) => {
 
 exports.isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) return res.redirect('/')
-
   next()
 }

@@ -58,40 +58,7 @@
             role="tabpanel"
             aria-labelledby="home-tab"
           >
-          <% errors.forEach( error => { %>
-            <div
-              class="alert alert-danger alert-dismissible fade show"
-              role="alert"
-            >
-              
-              <%= error.message || error %>
-              <button
-                type="button"
-                class="close"
-                data-dismiss="alert"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-          <% }) %>
-
-          <% success.forEach( message => { %>
-              <div
-                class="alert alert-primary alert-dismissible fade show"
-                role="alert"
-              >
-                <%= message %>
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="alert"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-            <% }) %>
+          
             <div class="row">
               <div class="col-md-6">
                 <label>Name: </label>

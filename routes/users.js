@@ -19,11 +19,7 @@ router.get('/login', userController.isAuthenticated, (req, res) => {
 })
 
 /* submit login form */
-router.post('/login', loginValidation, passport.authenticate('local-login', {
-  successRedirect: '/',
-  failureRedirect: '/users/login',
-  failureFlash: true
-}))
+router.post('/login', loginValidation, userController.login)
 
 router.get('/logout', (req, res) => {
   req.logOut()
@@ -35,6 +31,6 @@ router.get('/edit', (req, res) => {
   res.render('account/profile')
 })
 
-router.put('/editUser', userController.findUserAndUpdate)
+router.put('/', userController.findUserAndUpdate)
 
 module.exports = router

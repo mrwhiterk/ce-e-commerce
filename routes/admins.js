@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const adminValidator = require('../utils/adminChecker')
-const adminController = require('../controllers/adminController')
+const adminController = require('../controllers/categoryController')
 
 router.get('/', adminController.getCategories)
 
