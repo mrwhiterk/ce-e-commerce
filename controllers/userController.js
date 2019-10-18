@@ -113,16 +113,9 @@ exports.findUserAndUpdate = async (req, res) => {
   ) {
     const oldPassword = req.user.password
     req.user.password = (await hasher(req.body.password[0])) || oldPassword
-    try {
-      const isNewPasswordSameAsOld = await bcrypt.compare(
-        req.body.password[0],
-        oldPassword
-      )
-      if (!isNewPasswordSameAsOld) {
-        req.flash('success', 'successfully updated user password')
-      }
-    } catch (err) {
-      req.flash('errors', err)
+
+    if (req.body.password[0] !== req.body.oldPassword) {
+      req.flash('success', 'successfully updated user password')
     }
   } else {
     req.flash('errors', 'password not updated')
