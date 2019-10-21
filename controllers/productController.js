@@ -2,17 +2,19 @@ const Product = require('../models/Product')
 const faker = require('faker')
 
 module.exports = {
-  getProducts: (req, res) => {
-    Product.find({})
-      .populate('category')
-      .exec((err, products) => {
-        if (err) throw err
+  getProducts: async (req, res) => {
+    try {
+      const products = await Product.find()
+        .populate('category')
+        .exec()
 
-        res.render('products/products', { products })
-      })
+      res.render('products/products', { products })
+    } catch (err) {
+      if (err) throw err
+    }
   },
 
-  seedProducts: (req, res) => {
+  seedProducts: async (req, res) => {
     const newProducts = []
     for (let i = 0; i < 10; i++) {
       newProducts.push({
@@ -22,29 +24,35 @@ module.exports = {
         image: faker.image.image()
       })
     }
-    Product.create(newProducts, (err, products) => {
-      if (err) throw err
+    try {
+      const products = await Product.create(newProducts)
 
       req.flash('success', `created ${products.length} products`)
       res.redirect('/admin')
-    })
+    } catch (err) {
+      if (err) throw err
+    }
   },
 
-  getProductById: (req, res) => {
-    Product.findById(req.params.id, (err, product) => {
-      if (err) throw err
+  getProductById: async (req, res) => {
+    try {
+      const product = await Product.findById(req.params.id)
 
       res.render('products/product', { product })
-    })
+    } catch (err) {
+      if (err) throw err
+    }
   },
 
-  getProductsByCategoryId: (req, res) => {
-    Product.find({ category: req.params.id })
-      .populate('category')
-      .exec((err, products) => {
-        if (err) throw err
+  getProductsByCategoryId: async (req, res) => {
+    try {
+      const products = await Product.find({ category: req.params.id })
+        .populate('category')
+        .exec()
 
-        res.render('products/products', { products })
-      })
+      res.render('products/products', { products })
+    } catch (err) {
+      if (err) throw err
+    }
   }
 }
