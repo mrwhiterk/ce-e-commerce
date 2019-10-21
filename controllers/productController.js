@@ -54,5 +54,17 @@ module.exports = {
     } catch (err) {
       if (err) throw err
     }
+  },
+
+  delete: async (req, res) => {
+    try {
+      const product = await Product.findByIdAndDelete(req.params.id)
+      res.json({
+        confirmation: 'success',
+        message: `product: ${product.name} was successfully deleted`
+      })
+    } catch (err) {
+      if (err) throw err
+    }
   }
 }
