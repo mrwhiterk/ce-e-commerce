@@ -4,14 +4,16 @@ const adminValidator = require('../utils/adminChecker')
 const adminController = require('../controllers/categoryController')
 const productController = require('../controllers/productController')
 
+// localhost:3000/admin
 router.get('/', adminController.getCategories)
 
-router.get('/new', (req, res) => {
-  res.render('products/addCategory')
-})
+// localhost:3000/admin/new
+router.get('/new', adminController.showAddCategory)
 
+// localhost:3000/admin
 router.post('/', adminValidator, adminController.addCategory)
 
-// router.get('/create-fake-product/:category/:id', productController.createById)
+// localhost:3000/admin/seedProducts/:category/:id
+router.get('/seedProducts/:category/:id', productController.seedProducts)
 
 module.exports = router

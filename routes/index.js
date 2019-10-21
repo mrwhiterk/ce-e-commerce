@@ -2,7 +2,7 @@ const express = require('express')
 const indexRouter = express.Router()
 const usersRouter = require('./users')
 const productsRouter = require('./products')
-const adminsRouter = require('./admins')
+const adminsRouter = require('./admin')
 
 /* GET home page. */
 indexRouter.get('/', (req, res) => {

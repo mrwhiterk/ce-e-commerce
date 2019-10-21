@@ -93,7 +93,7 @@ app.use(async (req, res, next) => {
 app.use('/', indexRouter)
 app.use('/users', usersRouter)
 app.use('/products', productsRouter)
-app.use('/admins', adminsRouter)
+app.use('/admin', adminsRouter)
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

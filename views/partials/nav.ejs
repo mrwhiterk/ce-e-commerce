@@ -34,7 +34,7 @@
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <% categories.map( category => { %>
-            <a class="dropdown-item" href=""><%= category.name %></a>
+            <a class="dropdown-item" href="/products/findByCategory/<%= category.id %>"><%= category.name %></a>
             <% }) %>
           </div>
         </div>

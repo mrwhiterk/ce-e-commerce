@@ -1,5 +1,9 @@
 const Category = require('../models/Category')
 
+function showAddCategory (req, res) {
+  res.render('products/addCategory')
+}
+
 async function getCategories (req, res) {
   try {
     const categories = await Category.find()
@@ -26,10 +30,11 @@ async function addCategory (req, res) {
       }
     }
   }
-  res.redirect('/admins/new')
+  res.redirect('/admin/new')
 }
 
 module.exports = {
   addCategory,
-  getCategories
+  getCategories,
+  showAddCategory
 }
