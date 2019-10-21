@@ -19,7 +19,11 @@ router.get('/login', userController.isAuthenticated, (req, res) => {
 })
 
 /* submit login form */
-router.post('/login', loginValidation, userController.login2)
+router.post('/login', loginValidation, passport.authenticate('local-login', {
+  successRedirect: '/',
+  failureRedirect: '/users/login',
+  failureFlash: true
+}))
 
 router.get('/logout', (req, res) => {
   req.logOut()

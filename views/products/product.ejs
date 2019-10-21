@@ -1,0 +1,43 @@
+<% include ../partials/account %> 
+<% include ../partials/nav %>
+
+ <body>
+        <br>
+       <div class="row">
+           <div class="col">
+               <img src="<%= product.image %>" />
+           </div>
+           <div class="col">
+               <h1>Name: <%= product.name %> </h1>
+               <h2>Price: <%= product.price %> </h2>
+
+                <form method='POST' action='/api/cart/product'>
+                    <div class="btn-group" role="group" aria-label="...">
+                    <input type="hidden" name="quantity" id="quantity" value="1"></input>
+                    <button type="button" id="minus" class="btn btn-default"><i class="fas fa-minus"></i></button>
+                    <button type="button" id="total" class="btn btn-default">1</button>
+                    <button type="button" id="plus"  class="btn btn-default"><i class="fas fa-plus"></i></button>
+                    </div>
+
+                    <div class="form-group">
+                    <input type="hidden" name='productID'   id='productID'   value="">
+                    <input type="hidden" name='priceHidden' id='priceHidden' value="" >
+
+                    <input type="text" class="form-control" name='item'       id='item' value='' >
+                    <input type="text" class="form-control" name='priceValue' id='priceValue' value='' >
+                    </div>
+
+                    
+                        <button type='submit' class='btn btn-primary btn-lg'>Add to cart</button>
+                    
+                        <a href='/api/users/signup'>Sign up to begin buying!</a>
+                    
+
+                </form>
+           </div>
+           
+       </div>
+ </body>
+</html>
+
+<% include ../partials/footer %> 
