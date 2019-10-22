@@ -4,7 +4,7 @@ const userController = require('../controllers/userController')
 const signupValidation = require('../utils/signupValidation')
 const loginValidation = require('../utils/loginValidation')
 
-// localhost:3000/products/
+// localhost:3000/users/
 router.get('/signup', userController.isAuthenticated, userController.showSignup)
 
 router.post('/signup', signupValidation, userController.signup)
