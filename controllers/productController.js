@@ -75,6 +75,7 @@ module.exports = {
 
   getPageIfUserLoggedIn: (req, res, next) => {
     if (req.user) {
+      // res.redirect('/products')
       paginate(req, res, next)
     } else {
       res.render('index')
