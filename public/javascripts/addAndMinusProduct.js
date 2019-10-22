@@ -14,4 +14,3 @@ minusBtn.addEventListener('click', () => {
   if (num > 1) counter.textContent = num - 1
   priceValue.value = Number(initialPrice * +counter.textContent).toFixed(2)
 })
-
