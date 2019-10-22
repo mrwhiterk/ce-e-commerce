@@ -28,7 +28,10 @@ module.exports = {
       const products = await Product.create(newProducts)
 
       req.flash('success', `created ${products.length} products`)
-      res.redirect('/admin')
+      res.render('categories/createFakeProduct', {
+        products,
+        success: req.flash('success')
+      })
     } catch (err) {
       if (err) throw err
     }

@@ -7,8 +7,9 @@ function showAddCategory (req, res) {
 async function getCategories (req, res) {
   try {
     const categories = await Category.find()
-    req.flash('success', 'successfully got users')
-    res.render('categories/createFakeProduct', { categories })
+    // req.flash('success', 'successfully got categories')
+
+    res.render('categories/createFakeProduct', { categories, success: req.flash('success') })
   } catch (err) {
     req.flash('errors', err)
     res.render('categories/createFakeProduct')
@@ -34,7 +35,7 @@ async function addCategory (req, res) {
 }
 
 module.exports = {
-  addCategory,
   getCategories,
+  addCategory,
   showAddCategory
 }
