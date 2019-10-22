@@ -2,6 +2,21 @@ const User = require('../models/User')
 const bcrypt = require('bcryptjs')
 const hasher = require('../utils/hasher')
 const gravatar = require('../utils/gravatar')
+const passport = require('passport')
+
+exports.showSignup = (req, res) => {
+  res.render('auth/signup')
+}
+
+exports.showLogin = (req, res) => {
+  res.render('auth/login')
+}
+
+exports.passportLogin = passport.authenticate('local-login', {
+  successRedirect: '/',
+  failureRedirect: '/users/login',
+  failureFlash: true
+})
 
 exports.signup = (req, res) => {
   const errorValidate = req.validationErrors()
@@ -178,4 +193,14 @@ exports.findUserAndUpdate = async (req, res) => {
 exports.isAuthenticated = (req, res, next) => {
   if (req.isAuthenticated()) return res.redirect('/')
   next()
+}
+
+exports.showEditUser = (req, res) => {
+  if (!req.isAuthenticated()) return res.redirect('/')
+  res.render('account/profile')
+}
+
+exports.logout = (req, res) => {
+  req.logOut()
+  res.redirect('/')
 }
