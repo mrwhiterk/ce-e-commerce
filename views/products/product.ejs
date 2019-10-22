@@ -23,8 +23,8 @@
                     <input type="hidden" name='productID'   id='productID'   value="<%= product.id %>">
                     <input type="hidden" name='priceHidden' id='priceHidden' value="<%= product.price %>" >
 
-                    <input type="text" class="form-control" name='item'       id='item' value='<%= product.name %>' >
-                    <input type="text" class="form-control" name='priceValue' id='priceValue' value='<%= product.price %>' >
+                    <input type="text" class="form-control" name='item'       id='item' value='<%= product.name %>' disabled>
+                    <input type="text" class="form-control" name='priceValue' id='priceValue' value='$ <%= product.price.toFixed(2) %>' disabled>
                     </div>
 
                     <% if (user) { %>
@@ -37,6 +37,7 @@
            </div>
            
        </div>
+       <script src="/javascripts/addAndMinusProduct.js"></script>
  </body>
 </html>
 

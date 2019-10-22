@@ -1,12 +1,11 @@
-<% include ./partials/header %> 
-<% include ./partials/nav %> 
-<% include ./partials/main %> 
-<p id="testId" class="text-white">Some text</p>
-<% include ./partials/footer %>
-<script>
-  console.log($('#testId').text())
+<!DOCTYPE html>
+<html>
+  <% include ./partials/header %> 
+  <body>
+    <% include ./partials/nav %> 
+    <% include ./partials/main %> 
+    <% include ./partials/footer %>
+    
 
-  $('#testId').on('click', function (evt) {
-    $(this).text('updated')
-  })
-</script>
+  </body>
+</html>

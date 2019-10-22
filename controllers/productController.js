@@ -1,6 +1,8 @@
 const Product = require('../models/Product')
 const faker = require('faker')
 
+const paginate = require('../utils/pagination')
+
 module.exports = {
   getProducts: async (req, res) => {
     try {
@@ -68,6 +70,15 @@ module.exports = {
       })
     } catch (err) {
       if (err) throw err
+    }
+  },
+
+  getPageIfUserLoggedIn: (req, res, next) => {
+    if (req.user) {
+      // res.redirect('/products')
+      paginate(req, res, next)
+    } else {
+      res.render('index')
     }
   }
 }
