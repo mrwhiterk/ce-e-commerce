@@ -73,7 +73,7 @@ exports.signup = (req, res) => {
       throw err
     })
 }
-
+// not in use -> callback version
 exports.login = (req, res) => {
   const refuse = () => res.redirect('/users/login')
   User.findOne({ email: req.body.email }, (err, user) => {
@@ -111,6 +111,7 @@ exports.login = (req, res) => {
   })
 }
 
+// not in use -> async/await version
 exports.login2 = async (req, res) => {
   const refuse = () => res.redirect('/users/login')
 
