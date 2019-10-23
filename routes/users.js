@@ -1,22 +1,31 @@
 const express = require('express')
 const router = express.Router()
-const userController = require('../controllers/userController')
+const {
+  isAuthenticated: redirectIfAuthenticated,
+  showSignup,
+  signup,
+  showLogin,
+  passportLogin,
+  logout,
+  showEditUser,
+  findUserAndUpdate
+} = require('../controllers/userController')
 const signupValidation = require('../utils/signupValidation')
 const loginValidation = require('../utils/loginValidation')
 
 // localhost:3000/users/
-router.get('/signup', userController.isAuthenticated, userController.showSignup)
+router.get('/signup', redirectIfAuthenticated, showSignup)
 
-router.post('/signup', signupValidation, userController.signup)
+router.post('/signup', signupValidation, signup)
 
-router.get('/login', userController.isAuthenticated, userController.showLogin)
+router.get('/login', redirectIfAuthenticated, showLogin)
 
-router.post('/login', loginValidation, userController.passportLogin)
+router.post('/login', loginValidation, passportLogin)
 
-router.get('/logout', userController.logout)
+router.get('/logout', logout)
 
-router.get('/edit', userController.showEditUser)
+router.get('/edit', showEditUser)
 
-router.put('/', userController.findUserAndUpdate)
+router.put('/', findUserAndUpdate)
 
 module.exports = router

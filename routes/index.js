@@ -3,11 +3,11 @@ const indexRouter = express.Router()
 const usersRouter = require('./users')
 const productsRouter = require('./products')
 const adminsRouter = require('./admin')
-const productController = require('../controllers/productController')
-const paginate = require('../utils/pagination')
+const { getPageIfUserLoggedIn } = require('../controllers/productController')
+const { paginate } = require('../utils/pagination')
 
-indexRouter.get('/', productController.getPageIfUserLoggedIn)
+indexRouter.get('/', getPageIfUserLoggedIn)
 
-indexRouter.get('/page/:page', paginate.paginate)
+indexRouter.get('/page/:page', paginate)
 
 module.exports = { indexRouter, usersRouter, productsRouter, adminsRouter }

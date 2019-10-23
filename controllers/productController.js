@@ -61,7 +61,7 @@ module.exports = {
     }
   },
 
-  delete: async (req, res) => {
+  deleteProduct: async (req, res) => {
     try {
       const product = await Product.findByIdAndDelete(req.params.id)
       res.json({
@@ -75,7 +75,6 @@ module.exports = {
 
   getPageIfUserLoggedIn: (req, res, next) => {
     if (req.user) {
-      // res.redirect('/products')
       paginate(req, res, next)
     } else {
       res.render('index')

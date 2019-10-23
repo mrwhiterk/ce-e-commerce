@@ -22,93 +22,95 @@ require('dotenv').config()
 require('./db')
 
 // view engine setup
-app.set('view engine', 'ejs')
+app
+  .set('view engine', 'ejs')
 
-app.use(logger('dev'))
-app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
-app.use(cookieParser())
-app.use(express.static(path.join(__dirname, 'public')))
-app.use(methodOverride('_method'))
+  .use(logger('dev'))
+  .use(express.json())
+  .use(express.urlencoded({ extended: false }))
+  .use(cookieParser())
+  .use(express.static(path.join(__dirname, 'public')))
+  .use(methodOverride('_method'))
 
-app.use(
-  session({
-    resave: true,
-    saveUninitialized: true,
-    secret: process.env.SESSION_SECRET,
-    store: new MongoStore({
-      url: process.env.MONGODB_URI,
-      autoReconnect: true
-    }),
-    cookie: {
-      secure: false,
-      maxAge: 365 * 24 * 60 * 60 * 1000
-    }
-  })
-)
+  .use(
+    session({
+      resave: true,
+      saveUninitialized: true,
+      secret: process.env.SESSION_SECRET,
+      store: new MongoStore({
+        url: process.env.MONGODB_URI,
+        autoReconnect: true
+      }),
+      cookie: {
+        secure: false,
+        maxAge: 365 * 24 * 60 * 60 * 1000
+      }
+    })
+  )
 
-app.use(flash())
+  .use(flash())
 
 require('./lib/passport')(passport)
-app.use(passport.initialize())
-app.use(passport.session())
+app
+  .use(passport.initialize())
 
-app.use(
-  expressValidator({
-    errorFormatter: (param, message, value) => {
-      const namespace = param.split('.')
-      const root = namespace.shift()
-      let formParam = root
+  .use(passport.session())
 
-      while (namespace.length) {
-        formParam += `[${namespace.shift()}]`
+  .use(
+    expressValidator({
+      errorFormatter: (param, message, value) => {
+        const namespace = param.split('.')
+        const root = namespace.shift()
+        let formParam = root
+
+        while (namespace.length) {
+          formParam += `[${namespace.shift()}]`
+        }
+
+        return {
+          param: formParam,
+          message,
+          value
+        }
       }
+    })
+  )
 
-      return {
-        param: formParam,
-        message,
-        value
-      }
-    }
+  .use((req, res, next) => {
+    res.locals.user = req.user
+    res.locals.errors = req.flash('errors')
+    res.locals.success = req.flash('success')
+
+    next()
   })
-)
 
-app.use((req, res, next) => {
-  res.locals.user = req.user
-  res.locals.errors = req.flash('errors')
-  res.locals.success = req.flash('success')
+  .use(async (req, res, next) => {
+    try {
+      res.locals.categories = await Category.find()
+    } catch (err) {
+      req.flash('errors', err)
+    }
+    next()
+  })
 
-  next()
-})
+  .use('/', indexRouter)
+  .use('/users', usersRouter)
+  .use('/products', productsRouter)
+  .use('/admin', adminsRouter)
 
-app.use(async (req, res, next) => {
-  try {
-    res.locals.categories = await Category.find()
-  } catch (err) {
-    req.flash('errors', err)
-  }
-  next()
-})
+  .use((req, res, next) => {
+    next(createError(404))
+  })
 
-app.use('/', indexRouter)
-app.use('/users', usersRouter)
-app.use('/products', productsRouter)
-app.use('/admin', adminsRouter)
+  // error handler
+  .use((err, req, res, next) => {
+    // set locals, only providing error in development
+    res.locals.message = err.message
+    res.locals.error = req.app.get('env') === 'development' ? err : {}
 
-// catch 404 and forward to error handler
-app.use((req, res, next) => {
-  next(createError(404))
-})
-
-// error handler
-app.use((err, req, res, next) => {
-  // set locals, only providing error in development
-  res.locals.message = err.message
-  res.locals.error = req.app.get('env') === 'development' ? err : {}
-
-  // render the error page
-  res.status(err.status || 500)
-  res.render('error')
-})
+    // render the error page
+    res.status(err.status || 500)
+    res.render('error')
+  })
 
 module.exports = app

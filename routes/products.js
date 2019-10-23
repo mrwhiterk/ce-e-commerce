@@ -1,14 +1,19 @@
 const express = require('express')
 const router = express.Router()
-const productController = require('../controllers/productController')
+const {
+  getProducts,
+  getProductById,
+  getProductsByCategoryId,
+  deleteProduct
+} = require('../controllers/productController')
 
 // localhost:3000/products/
-router.get('/', productController.getProducts)
+router.get('/', getProducts)
 
-router.get('/:id', productController.getProductById)
+router.get('/:id', getProductById)
 
-router.get('/findByCategory/:id', productController.getProductsByCategoryId)
+router.get('/findByCategory/:id', getProductsByCategoryId)
 
-router.delete('/:id', productController.delete)
+router.delete('/:id', deleteProduct)
 
 module.exports = router
