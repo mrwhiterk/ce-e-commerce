@@ -1,48 +1,57 @@
-<% include ../partials/account %> 
-<% include ../partials/nav %>
+<!DOCTYPE html>
+<html>
+  <% include ../partials/account %>
+  <body>
+    <% include ../partials/nav %>
+    <form class="form-signin" method="POST" action="/users/signup">
+      <% errors.forEach( error => { %>
+      <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <button
+          type="button"
+          class="close"
+          data-dismiss="alert"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <%= error.message || error %>
+      </div>
+      <% }) %>
 
-<form class="form-signin" method="POST" action="/users/signup">
-  <% errors.forEach( error => { %>
-    <div class="alert alert-danger alert-dismissible fade show" role="alert">
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-      <%= error.message || error %>
-    </div>
-  <% }) %> 
+      <h1 class="h3 mb-3 font-weight-normal">Please Sign Up</h1>
 
-  <h1 class="h3 mb-3 font-weight-normal">Please Sign Up</h1>
+      <label for="inputName" class="sr-only">Name</label>
+      <input
+        type="text"
+        id="inputName"
+        class="form-control"
+        placeholder="Name"
+        name="name"
+      />
 
-  <label for="inputName" class="sr-only">Name</label>
-  <input
-    type="text"
-    id="inputName"
-    class="form-control"
-    placeholder="Name"
-    name="name"
-  />
+      <label for="inputEmail" class="sr-only">Email address</label>
+      <input
+        type="text"
+        id="inputEmail"
+        class="form-control"
+        placeholder="Email address"
+        name="email"
+      />
 
-  <label for="inputEmail" class="sr-only">Email address</label>
-  <input
-    type="text"
-    id="inputEmail"
-    class="form-control"
-    placeholder="Email address"
-    name="email"
-  />
+      <label for="inputPassword" class="sr-only">Password</label>
+      <input
+        type="text"
+        id="inputPassword"
+        class="form-control"
+        placeholder="Password"
+        name="password"
+      />
+      <br />
 
-  <label for="inputPassword" class="sr-only">Password</label>
-  <input
-    type="text"
-    id="inputPassword"
-    class="form-control"
-    placeholder="Password"
-    name="password"
-  />
-  <br />
+      <button class="btn btn-sm btn-primary" type="submit">Sign up</button>
+      <p class="mt-5 mb-3 text-muted">&copy; 2017-2019</p>
+    </form>
 
-  <button class="btn btn-sm btn-primary" type="submit">Sign up</button>
-  <p class="mt-5 mb-3 text-muted">&copy; 2017-2019</p>
-</form>
-
-<% include ../partials/footer %>
+    <% include ../partials/footer %>
+  </body>
+</html>
