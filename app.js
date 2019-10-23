@@ -9,7 +9,8 @@ const {
   indexRouter,
   usersRouter,
   productsRouter,
-  adminsRouter
+  adminsRouter,
+  cartsRouter
 } = require('./routes')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
@@ -21,7 +22,6 @@ const Category = require('./models/Category')
 require('dotenv').config()
 require('./db')
 
-// view engine setup
 app
   .set('view engine', 'ejs')
 
@@ -97,6 +97,7 @@ app
   .use('/users', usersRouter)
   .use('/products', productsRouter)
   .use('/admin', adminsRouter)
+  .use('/cart', cartsRouter)
 
   .use((req, res, next) => {
     next(createError(404))

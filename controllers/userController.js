@@ -4,6 +4,8 @@ const hasher = require('../utils/hasher')
 const gravatar = require('../utils/gravatar')
 const passport = require('passport')
 
+const { create } = require('./cartController')
+
 exports.showSignup = (req, res) => {
   res.render('auth/signup')
 }
@@ -59,7 +61,8 @@ exports.signup = (req, res) => {
                         message: err
                       })
                     } else {
-                      res.redirect(301, '/')
+                      return create(req, res)
+                      // res.redirect(301, '/')
                     }
                   })
                 })

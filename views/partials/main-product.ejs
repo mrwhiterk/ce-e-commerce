@@ -2,11 +2,25 @@
   <div class="container">
     <h1 class="display-3 text-center">
       Best Online Shopping
-      
     </h1>
   </div>
 </div>
-
+<% success.forEach( message => { %>
+  <div
+    class="alert alert-primary alert-dismissible fade show"
+    role="alert"
+  >
+    <%= message %>
+    <button
+      type="button"
+      class="close"
+      data-dismiss="alert"
+      aria-label="Close"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+<% }) %>
 <div class="row" id="productSearchResults">
   <% products.forEach(product => { %>
   <div class="col">
@@ -37,7 +51,8 @@
   <li class="disabled page-item"><a class="page-link">First</a></li>
   <% } else { %>
   <li class="page-item"><a href="/page/1" class="page-link">First</a></li>
-  <% } %> <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %> <% if (i
+  <% } %> 
+  <% var i = (Number(current) > 5 ? Number(current) - 4 : 1) %> <% if (i
   !== 1) { %>
   <li class="disabled page-item"><a class="page-link">...</a></li>
   <% } %> <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %> <% if (i
