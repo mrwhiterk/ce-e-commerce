@@ -73,6 +73,7 @@ exports.signup = (req, res) => {
       throw err
     })
 }
+
 // not in use -> callback version
 exports.login = (req, res) => {
   const refuse = () => res.redirect('/users/login')
