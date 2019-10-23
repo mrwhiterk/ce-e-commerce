@@ -7,8 +7,6 @@ function showAddCategory (req, res) {
 async function getCategories (req, res) {
   try {
     const categories = await Category.find()
-    // req.flash('success', 'successfully got categories')
-
     res.render('categories/createFakeProduct', { categories, success: req.flash('success') })
   } catch (err) {
     req.flash('errors', err)
