@@ -4,7 +4,8 @@ const path = require('path')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 const flash = require('connect-flash')
-const passport = require('passport')
+const passportSetup = require('./lib/passport/setup')
+
 const {
   indexRouter,
   usersRouter,
@@ -12,8 +13,7 @@ const {
   adminsRouter,
   cartsRouter
 } = require('./routes')
-const session = require('express-session')
-const MongoStore = require('connect-mongo')(session)
+
 const expressValidator = require('express-validator')
 const app = express()
 const methodOverride = require('method-override')
@@ -23,96 +23,74 @@ const cartMiddleWare = require('./utils/cart')
 require('dotenv').config()
 require('./db')
 
-app
-  .set('view engine', 'ejs')
+app.set('view engine', 'ejs')
 
-  .use(logger('dev'))
-  .use(express.json())
-  .use(express.urlencoded({ extended: false }))
-  .use(cookieParser())
-  .use(express.static(path.join(__dirname, 'public')))
-  .use(methodOverride('_method'))
+app.use(logger('dev'))
+app.use(express.json())
+app.use(express.urlencoded({ extended: false }))
+app.use(cookieParser())
+app.use(express.static(path.join(__dirname, 'public')))
+app.use(methodOverride('_method'))
 
-  .use(
-    session({
-      resave: true,
-      saveUninitialized: true,
-      secret: process.env.SESSION_SECRET,
-      store: new MongoStore({
-        url: process.env.MONGODB_URI,
-        autoReconnect: true
-      }),
-      cookie: {
-        secure: false,
-        maxAge: 365 * 24 * 60 * 60 * 1000
+passportSetup(app)
+
+app.use(flash())
+
+app.use(
+  expressValidator({
+    errorFormatter: (param, message, value) => {
+      const namespace = param.split('.')
+      const root = namespace.shift()
+      let formParam = root
+
+      while (namespace.length) {
+        formParam += `[${namespace.shift()}]`
       }
-    })
-  )
 
-  .use(flash())
-
-require('./lib/passport')(passport)
-app
-  .use(passport.initialize())
-
-  .use(passport.session())
-
-  .use(
-    expressValidator({
-      errorFormatter: (param, message, value) => {
-        const namespace = param.split('.')
-        const root = namespace.shift()
-        let formParam = root
-
-        while (namespace.length) {
-          formParam += `[${namespace.shift()}]`
-        }
-
-        return {
-          param: formParam,
-          message,
-          value
-        }
+      return {
+        param: formParam,
+        message,
+        value
       }
-    })
-  )
-
-  .use((req, res, next) => {
-    res.locals.user = req.user
-    res.locals.errors = req.flash('errors')
-    res.locals.success = req.flash('success')
-
-    next()
-  }, cartMiddleWare)
-
-  .use(async (req, res, next) => {
-    try {
-      res.locals.categories = await Category.find()
-    } catch (err) {
-      req.flash('errors', err)
     }
-    next()
   })
+)
+app.use(cartMiddleWare)
+app.use((req, res, next) => {
+  res.locals.user = req.user
+  res.locals.errors = req.flash('errors')
+  res.locals.success = req.flash('success')
 
-  .use('/', indexRouter)
-  .use('/users', usersRouter)
-  .use('/products', productsRouter)
-  .use('/admin', adminsRouter)
-  .use('/cart', cartsRouter)
+  next()
+})
 
-  .use((req, res, next) => {
-    next(createError(404))
-  })
+app.use(async (req, res, next) => {
+  try {
+    res.locals.categories = await Category.find()
+  } catch (err) {
+    req.flash('errors', err)
+  }
+  next()
+})
 
-  // error handler
-  .use((err, req, res, next) => {
-    // set locals, only providing error in development
-    res.locals.message = err.message
-    res.locals.error = req.app.get('env') === 'development' ? err : {}
+app.use('/', indexRouter)
+app.use('/users', usersRouter)
+app.use('/products', productsRouter)
+app.use('/admin', adminsRouter)
+app.use('/cart', cartsRouter)
 
-    // render the error page
-    res.status(err.status || 500)
-    res.render('error')
-  })
+app.use((req, res, next) => {
+  next(createError(404))
+})
+
+app.use((err, req, res, next) => {
+  // set locals, only providing error in development
+  res.locals.message = err.message
+  res.locals.error = req.app.get('env') === 'development' ? err : {}
+
+  // render the error page
+  res.status(err.status || 500)
+  res.render('error')
+})
 
 module.exports = app
