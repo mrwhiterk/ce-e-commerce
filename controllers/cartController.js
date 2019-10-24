@@ -14,7 +14,6 @@ module.exports = {
     )
   },
   addProductToCart: (req, res) => {
-    console.log('reqqqq', req.body)
     Cart.findOne({ user: req.user.id }, (err, cart) => {
       if (err) throw err
 
@@ -35,5 +34,14 @@ module.exports = {
         res.redirect('/cart')
       })
     })
+  },
+  showUserCart: (req, res) => {
+    Cart.findOne({ user: req.user.id })
+      .populate('items.item')
+      .exec((err, cart) => {
+        if (err) throw err
+
+        res.render('cart/cart', { cart })
+      })
   }
 }

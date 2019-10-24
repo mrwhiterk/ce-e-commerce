@@ -2,19 +2,12 @@ const express = require('express')
 const router = express.Router()
 const Cart = require('../models/Cart')
 
-const { addProductToCart } = require('../controllers/cartController')
+const {
+  addProductToCart,
+  showUserCart
+} = require('../controllers/cartController')
 
-router.get('/', (req, res) => {
-  Cart.findOne({ user: req.user.id })
-    .populate('items.item')
-    .exec((err, cart) => {
-      if (err) throw err
-
-      console.log('cart', cart)
-
-      res.render('cart/cart', { cart })
-    })
-})
+router.get('/', showUserCart)
 
 router.post('/product', addProductToCart)
 
