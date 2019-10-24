@@ -1,0 +1,29 @@
+.fa-stack[data-count]:after{
+    position:absolute;
+    right:0%;
+    top:0%;
+    content: attr(data-count);
+    font-size:40%;
+    padding:.6em;
+    border-radius:999px;
+    line-height:.75em;
+    color: white;
+    color: rgb(19, 19, 19);;
+    text-align:center;
+    min-width: 2em;
+    font-weight:bold;
+    background: white;
+    border-style:solid;
+}
+  
+/* .fa-circle {
+    color:#DF0000;
+} */
+
+.fa-stack {
+  line-height: 2.5em
+}
+
+.fa-cart-plus {
+    color: orange;
+}

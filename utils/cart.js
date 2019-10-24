@@ -5,7 +5,7 @@ module.exports = (req, res, next) => {
     Cart.findOne({ user: req.user.id }, (err, cart) => {
       if (err) throw err
 
-      res.locals.total = cart.items.reduce(
+      res.locals.totalCartItems = cart.items.reduce(
         (acc, item) => acc + item.quantity,
         0
       )
@@ -13,7 +13,7 @@ module.exports = (req, res, next) => {
       next()
     })
   } else {
-    res.locals.total = 0
+    res.locals.totalCartItems = 0
     return next()
   }
 }

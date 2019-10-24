@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <% include ../partials/account %>
+  <body>
+    <% include ../partials/nav %>
+    <div class="container" style="margin-top: 10%">
+      <table id="cart" class="table table-hover table-condensed">
+        <thead>
+          <tr>
+            <th style="width:50%">cartItem</th>
+            <th style="width:10%">Price</th>
+            <th style="width:8%">Quantity</th>
+            <th style="width:22%" class="text-center">Subtotal</th>
+            <th style="width:10%"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% cart.items.forEach(item => { %>
+          <tr>
+            <td data-th="cartItem">
+              <div class="row">
+                <div class="col-sm-2 hidden-xs">
+                  <img
+                    style="height: 100px; width: 100px"
+                    src="<%= item.item.image %>"
+                    alt="..."
+                    class="img-responsive"
+                  />
+                </div>
+                <div class="col-sm-10" style="padding-left: 15%">
+                  <h4 class="nomargin"><%= item.item.name %></h4>
+                  <p></p>
+                </div>
+              </div>
+            </td>
+            <td data-th="Price">$<%= item.item.price %></td>
+            <td data-th="Quantity">
+              <div class="text-center"><%= item.quantity %></div>
+            </td>
+            <td data-th="Subtotal" class="text-center">$<%= item.price %></td>
+            <td class="actions" data-th="">
+              <form method="POST" action="/api/cart/remove">
+                <input type="hidden" name="item" value="" />
+                <input type="hidden" name="price" value="" />
+                <button class="btn btn-danger btn-sm">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </form>
+            </td>
+          </tr>
+          <% }) %>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td>
+              <a href="/" class="btn btn-warning">
+                <i class="fa fa-angle-left"></i>
+                Continue Shopping
+              </a>
+            </td>
+            <td colspan="2" class="hidden-xs"></td>
+
+            <td class="hidden-xs text-center"><strong>Total $</strong> <%= cart.items.reduce((acc, product) => acc + Number(product.price), 0) %> </td>
+            <td>
+              <a href="#">
+                <i
+                  class="far fa-credit-card fa-3x"
+                  data-toggle="modal"
+                  data-target="#exampleModal"
+                ></i>
+              </a>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Stripe Payment</h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="container">
+                <div class="row">
+                  <!-- You can make it whatever width you want. I'm making it full width
+                                on <= small devices and 4/12 page width on >= medium devices -->
+                  <div class="col"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% include ../partials/footer %>
+  </body>
+</html>

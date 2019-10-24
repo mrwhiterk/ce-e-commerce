@@ -34,7 +34,12 @@
           </button>
           <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <% categories.map( category => { %>
-            <a class="dropdown-item" href="/products/findByCategory/<%= category.id %>"><%= category.name %></a>
+            <a
+              class="dropdown-item"
+              href="/products/findByCategory/<%= category.id %>"
+            >
+              <%= category.name %>
+            </a>
             <% }) %>
           </div>
         </div>
@@ -75,16 +80,16 @@
         </a>
       </li>
       <li class="nav-item">
+        <a href="/cart/">
+          <span class="fa-stack has-badge" data-count="<%= totalCartItems %>">
+              <i class="fas fa-cart-plus"></i>
+            </span>
+        </a>
+      </li>
+      <li class="nav-item">
         <a href="/users/logout" class="nav-link">Log out</a>
-        </li>
-        <% } %>
-        <li class="nav-item">
-        <%= total %>
-        </li>
-        
-      
-        
-      
+      </li>
+      <% } %>
     </ul>
   </div>
 </nav>
