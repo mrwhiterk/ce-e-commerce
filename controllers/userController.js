@@ -62,7 +62,6 @@ exports.signup = (req, res) => {
                       })
                     } else {
                       return create(req, res)
-                      // res.redirect(301, '/')
                     }
                   })
                 })

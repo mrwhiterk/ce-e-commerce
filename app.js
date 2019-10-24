@@ -18,6 +18,7 @@ const expressValidator = require('express-validator')
 const app = express()
 const methodOverride = require('method-override')
 const Category = require('./models/Category')
+const cartMiddleWare = require('./utils/cart')
 
 require('dotenv').config()
 require('./db')
@@ -82,7 +83,7 @@ app
     res.locals.success = req.flash('success')
 
     next()
-  })
+  }, cartMiddleWare)
 
   .use(async (req, res, next) => {
     try {
