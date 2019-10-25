@@ -5,7 +5,6 @@ const CartSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   },
-  total: { type: Number, default: 0 },
   items: [
     {
       item: {
@@ -18,10 +17,12 @@ const CartSchema = new mongoose.Schema({
   ]
 })
 
-const Cart = mongoose.model('Cart', CartSchema)
+CartSchema.method('getTotalPrice', function () {
+  return this.items.reduce((acc, item) => acc + Number(item.price), 0)
+})
 
-Cart.sayHi = function () {
-  console.log('hi')
-}
+CartSchema.method('getTotalQuantity', function () {
+  return this.items.reduce((acc, item) => acc + Number(item.quantity), 0)
+})
 
-module.exports = Cart
+module.exports = mongoose.model('Cart', CartSchema)
