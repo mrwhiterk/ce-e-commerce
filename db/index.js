@@ -1,12 +1,15 @@
 const mongoose = require('mongoose')
 
-mongoose
-  .connect(process.env.MONGODB_URI, {
+mongoose.set('useCreateIndex', true)
+
+mongoose.connect(
+  process.env.MONGODB_URI,
+  {
     useNewUrlParser: true,
     useFindAndModify: false,
     useUnifiedTopology: true
-  })
-  .then(data => {
-    console.log('DB Connected')
-  })
-  .catch(err => console.log(err))
+  },
+  (err, data) => {
+    if (err) console.log(err)
+  }
+)

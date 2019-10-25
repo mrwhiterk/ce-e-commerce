@@ -39,9 +39,9 @@
             </td>
             <td data-th="Subtotal" class="text-center">$<%= item.price %></td>
             <td class="actions" data-th="">
-              <form method="POST" action="/api/cart/remove">
-                <input type="hidden" name="item" value="" />
-                <input type="hidden" name="price" value="" />
+              <form method="POST" action="/cart/removeProduct?_method=DELETE">
+                <input type="hidden" name="item" value="<%= item.id %>" />
+                <input type="hidden" name="price" value="<%= item.price %>" />
                 <button class="btn btn-danger btn-sm">
                   <i class="fas fa-trash"></i>
                 </button>

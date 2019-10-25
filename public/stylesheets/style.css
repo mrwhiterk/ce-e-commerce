@@ -2,7 +2,7 @@
 body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background: -webkit-linear-gradient(left, black, rgb(255, 196, 208));
+  background: -webkit-linear-gradient(left, rgb(46, 155, 139), rgb(255, 196, 208));
 }
 
 .row {
