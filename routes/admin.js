@@ -9,11 +9,11 @@ const {
 const { seedProducts } = require('../controllers/productController')
 
 // localhost:3000/admin
-router.get('/', getCategories)
+router.get('/categories', getCategories)
 
-router.get('/new', showAddCategory)
+router.get('/addCategory', showAddCategory)
 
-router.post('/', adminValidator, addCategory)
+router.post('/category', adminValidator, addCategory)
 
 router.get('/seedProducts/:category/:id', seedProducts)
 

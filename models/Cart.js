@@ -18,4 +18,10 @@ const CartSchema = new mongoose.Schema({
   ]
 })
 
-module.exports = mongoose.model('Cart', CartSchema)
+const Cart = mongoose.model('Cart', CartSchema)
+
+Cart.sayHi = function () {
+  console.log('hi')
+}
+
+module.exports = Cart

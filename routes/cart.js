@@ -14,6 +14,7 @@ router.post('/product', addProductToCart)
 router.get('/getShoppingCart', (req, res) => {})
 
 router.delete('/removeProduct', (req, res) => {
+  Cart.sayHi()
   res.send('cannot delete')
 })
 

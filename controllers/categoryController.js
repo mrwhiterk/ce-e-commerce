@@ -29,7 +29,7 @@ async function addCategory (req, res) {
       }
     }
   }
-  res.redirect('/admin/new')
+  res.redirect('back')
 }
 
 module.exports = {
