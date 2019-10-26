@@ -24,7 +24,7 @@
                     <input type="hidden" name='priceHidden' id='priceHidden' value="<%= product.price %>" >
 
                     <input type="text" class="form-control" name='item'       id='item' value='<%= product.name %>' >
-                    <input type="text" class="form-control" name='priceValue' id='priceValue' value='<%= product.price %>' >
+                    <input type="text" class="form-control" name='priceValue' id='priceValue' value='<%= product.price.toFixed(2) %>' >
                     </div>
 
                     <% if (user) { %>

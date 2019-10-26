@@ -49,11 +49,11 @@
                 </div>
               </div>
             </td>
-            <td data-th="Price">$<%= item.item.price %></td>
+            <td data-th="Price">$<%= item.item.price.toFixed(2) %></td>
             <td data-th="Quantity">
               <div class="text-center"><%= item.quantity %></div>
             </td>
-            <td data-th="Subtotal" class="text-center">$<%= item.price %></td>
+            <td data-th="Subtotal" class="text-center">$<%= item.price.toFixed(2) %></td>
             <td class="actions" data-th="">
               <form method="POST" action="/cart/removeProduct/<%= item._id %>?_method=DELETE">
                 
@@ -75,7 +75,7 @@
             </td>
             <td colspan="2" class="hidden-xs"></td>
 
-            <td class="hidden-xs text-center"><strong>Total $</strong> <%= cart.getTotalPrice() %> </td>
+            <td class="hidden-xs text-center"><strong>Total $</strong> <%= cart.totalPrice %> </td>
             <td>
               <a href="#">
                 <i

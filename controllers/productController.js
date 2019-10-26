@@ -23,7 +23,7 @@ module.exports = {
         category: req.params.id,
         name: faker.commerce.productName(),
         price: faker.commerce.price(),
-        image: 'https://www.fillmurray.com/100/100'
+        image: 'https://www.fillmurray.com/500/500'
       })
     }
     try {

@@ -17,11 +17,11 @@ const CartSchema = new mongoose.Schema({
   ]
 })
 
-CartSchema.method('getTotalPrice', function () {
-  return this.items.reduce((acc, item) => acc + Number(item.price), 0)
+CartSchema.virtual('totalPrice').get(function () {
+  return this.items.reduce((acc, item) => acc + Number(item.price), 0).toFixed(2)
 })
 
-CartSchema.method('getTotalQuantity', function () {
+CartSchema.virtual('totalQuantity').get(function () {
   return this.items.reduce((acc, item) => acc + Number(item.quantity), 0)
 })
 

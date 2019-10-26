@@ -40,7 +40,7 @@ module.exports = {
       .populate('items.item')
       .exec((err, cart) => {
         if (err) throw err
-
+        console.log(cart)
         res.render('cart/cart', { cart })
       })
   }

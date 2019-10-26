@@ -16,14 +16,10 @@
     border-style:solid;
 }
   
-/* .fa-circle {
+.fa-circle {
     color:#DF0000;
-} */
-
-.fa-stack {
-  line-height: 2.5em
 }
 
-.fa-cart-plus {
+.fa-cat {
     color: orange;
 }
