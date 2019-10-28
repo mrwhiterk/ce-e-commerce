@@ -1,28 +1,36 @@
-<% include ../partials/account %> 
-<% include ../partials/nav %>
+<!DOCTYPE html>
+<html lang="en">
+  <% include ../partials/account %>
+  <body>
+    <% include ../partials/nav %>
 
-<div class="row">
-  <% products.forEach( product => { %>
-  <div class="col">
-    <div class="card" style="width: 18rem;">
-      <a href="/products/<%= product.id %>">
-        <img
-          class="card-img-top"
-          src="<%= product.image %>"
-          alt="Card image cap"
-        />
-      </a>
-      <div class="card-body">
-        <h5 class="card-title">Name: <%= product.name %></h5>
-        <p class="card-text">
-          Category: <%= product.category ? product.category.name : product.category %>
-        </p>
-        <p class="card-text">$<%= product.price.toFixed(2) %></p>
-        <a href="/products/<%= product.id %>" class="btn btn-primary">Shop</a>
+    <div class="row">
+      <% products.forEach( product => { %>
+      <div class="col">
+        <div class="card" style="width: 18rem;">
+          <a href="/products/<%= product.id %>">
+            <img
+              class="card-img-top"
+              src="<%= product.image %>"
+              alt="Card image cap"
+            />
+          </a>
+          <div class="card-body">
+            <h5 class="card-title">Name: <%= product.name %></h5>
+            <p class="card-text">
+              Category: <%= product.category ? product.category.name :
+              product.category %>
+            </p>
+            <p class="card-text">$<%= product.price.toFixed(2) %></p>
+            <a href="/products/<%= product.id %>" class="btn btn-primary">
+              Shop
+            </a>
+          </div>
+        </div>
       </div>
+      <% }) %>
     </div>
-  </div>
-  <% }) %> 
-  </div>
 
-<% include ../partials/footer %>
+    <% include ../partials/footer %>
+  </body>
+</html>
