@@ -14,24 +14,21 @@ module.exports = {
     )
   },
   addProductToCart: (req, res) => {
+    console.log(req.body)
     Cart.findOne({ user: req.user.id }, (err, cart) => {
       if (err) throw err
 
-      const newQuantity = parseInt(req.body.quantity)
-
       cart.items.push({
         price: req.body.priceValue,
-        quantity: newQuantity,
+        quantity: parseInt(req.body.quantity),
         item: req.body.productID
       })
-
-      cart.total = (cart.total + newQuantity).toFixed(2)
 
       cart.save((err, cart) => {
         if (err) throw err
 
-        req.flash('success', 'successfully updated cart: ', cart)
-        res.redirect('/cart')
+        req.flash('success', `successfully added ${req.body.item} to cart`)
+        res.redirect('back')
       })
     })
   },

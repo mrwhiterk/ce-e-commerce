@@ -1,44 +1,83 @@
-<% include ../partials/account %> 
-<% include ../partials/nav %>
+<!DOCTYPE html>
+<html lang="en">
+  <% include ../partials/account %>
+  <body>
+    <% include ../partials/nav %>
+    <br />
+    <% success.forEach( message => { %>
+    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+      <%= message %>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <% }) %>
+    <div class="row">
+      <div class="col">
+        <img src="<%= product.image %>" />
+      </div>
+      <div class="col">
+        <h1>Name: <%= product.name %></h1>
+        <h2>Price: <%= product.price %></h2>
 
- <body>
-        <br>
-       <div class="row">
-           <div class="col">
-               <img src="<%= product.image %>" />
-           </div>
-           <div class="col">
-               <h1>Name: <%= product.name %> </h1>
-               <h2>Price: <%= product.price %> </h2>
+        <form method="POST" action="/cart/product">
+          <div class="btn-group" role="group" aria-label="...">
+            <input type="hidden" name="quantity" id="quantity" value="1" />
+            <button type="button" id="minus" class="btn btn-default">
+              <i class="fas fa-minus"></i>
+            </button>
+            <button type="button" id="total" class="btn btn-default">1</button>
+            <button type="button" id="plus" class="btn btn-default">
+              <i class="fas fa-plus"></i>
+            </button>
+          </div>
 
-                <form method='POST' action='/cart/product'>
-                    <div class="btn-group" role="group" aria-label="...">
-                    <input type="hidden"  name="quantity" id="quantity" value="1">
-                    <button type="button" id="minus" class="btn btn-default"><i class="fas fa-minus"></i></button>
-                    <button type="button" id="total" class="btn btn-default">1</button>
-                    <button type="button" id="plus"  class="btn btn-default"><i class="fas fa-plus"></i></button>
-                    </div>
+          <div class="form-group">
+            <input
+              type="hidden"
+              name="productID"
+              id="productID"
+              value="<%= product._id %>"
+            />
+            <input
+              type="hidden"
+              name="priceHidden"
+              id="priceHidden"
+              value="<%= product.price %>"
+            />
 
-                    <div class="form-group">
-                    <input type="hidden" name='productID'   id='productID'   value="<%= product._id %>">
-                    <input type="hidden" name='priceHidden' id='priceHidden' value="<%= product.price %>" >
+            <input
+              type="text"
+              class="form-control"
+              name="item"
+              id="item"
+              value="<%= product.name %>"
+            />
+            <input
+              type="text"
+              class="form-control"
+              name="priceValue"
+              id="priceValue"
+              value="<%= product.price.toFixed(2) %>"
+            />
+          </div>
 
-                    <input type="text" class="form-control" name='item'       id='item' value='<%= product.name %>' >
-                    <input type="text" class="form-control" name='priceValue' id='priceValue' value='<%= product.price.toFixed(2) %>' >
-                    </div>
-
-                    <% if (user) { %>
-                        <button type='submit' class='btn btn-primary btn-lg'>Add to cart</button>
-                        <% } else { %>
-                        <a href='/users/signup'>Sign up to begin buying!</a>
-                    <% } %>
-
-                </form>
-           </div>
-           
-       </div>
-       <script src="/javascripts/addAndMinusProduct.js"></script>
- </body>
+          <% if (user) { %>
+          <button type="submit" class="btn btn-primary btn-lg">
+            Add to cart
+          </button>
+          <% } else { %>
+          <a href="/users/signup">Sign up to begin buying!</a>
+          <% } %>
+        </form>
+      </div>
+    </div>
+    <script src="/javascripts/addAndMinusProduct.js"></script>
+    <% include ../partials/footer %>
+  </body>
 </html>
-
-<% include ../partials/footer %> 
