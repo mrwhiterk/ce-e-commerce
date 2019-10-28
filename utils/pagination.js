@@ -11,7 +11,7 @@ module.exports = {
       .populate('category')
       .exec((err, products) => {
         if (err) return next(err)
-        Product.count().exec((err, count) => {
+        Product.countDocuments().exec((err, count) => {
           if (err) return next(err)
 
           res.render('products/', {
