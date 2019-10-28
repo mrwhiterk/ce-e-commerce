@@ -1,4 +1,5 @@
 const Cart = require('../models/Cart')
+const chalk = require('chalk')
 
 module.exports = {
   create: (req, res) => {
@@ -56,6 +57,8 @@ module.exports = {
           }
           return true
         })
+        // or pull 😝
+        // cart.items.pull(req.params.id)
 
         cart.save((err, updatedCart) => {
           if (err) throw err

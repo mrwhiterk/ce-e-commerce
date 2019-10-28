@@ -2,22 +2,19 @@
 <html>
   <% include ../partials/account %>
   <body>
-    <% include ../partials/nav %>
+    <% include ../partials/nav %> 
     <% success.forEach( message => { %>
-      <div
-        class="alert alert-primary alert-dismissible fade show"
-        role="alert"
+    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+      <%= message %>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        aria-label="Close"
       >
-        <%= message %>
-        <button
-          type="button"
-          class="close"
-          data-dismiss="alert"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
     <% }) %>
     <div class="container" style="margin-top: 10%">
       <table id="cart" class="table table-hover table-condensed">
@@ -53,10 +50,14 @@
             <td data-th="Quantity">
               <div class="text-center"><%= item.quantity %></div>
             </td>
-            <td data-th="Subtotal" class="text-center">$<%= item.price.toFixed(2) %></td>
+            <td data-th="Subtotal" class="text-center">
+              $<%= item.price.toFixed(2) %>
+            </td>
             <td class="actions" data-th="">
-              <form method="POST" action="/cart/removeProduct/<%= item._id %>?_method=DELETE">
-                
+              <form
+                method="POST"
+                action="/cart/removeProduct/<%= item._id %>?_method=DELETE"
+              >
                 <button class="btn btn-danger btn-sm">
                   <i class="fas fa-trash"></i>
                 </button>
@@ -75,7 +76,10 @@
             </td>
             <td colspan="2" class="hidden-xs"></td>
 
-            <td class="hidden-xs text-center"><strong>Total $</strong> <%= cart.totalPrice %> </td>
+            <td class="hidden-xs text-center">
+              <strong>Total $</strong>
+              <%= cart.totalPrice %>
+            </td>
             <td>
               <a href="#">
                 <i
@@ -113,9 +117,97 @@
             <div class="modal-body">
               <div class="container">
                 <div class="row">
-                  <!-- You can make it whatever width you want. I'm making it full width
-                                on <= small devices and 4/12 page width on >= medium devices -->
-                  <div class="col"></div>
+                  
+                  <div class="col">              
+                  <div class="panel panel-default credit-card-box">
+                    <div class="panel-heading display-table">
+                      <div class="row display-tr">
+                        <h3 class="panel-title display-td">Payment Details</h3>
+                        <div class="display-td">
+                          <img
+                            class="img-responsive pull-right"
+                            src="http://i76.imgup.net/accepted_c22e0.png"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="panel-body">
+                      <form role="form" id="payment-form" href="#">
+                        <div class="row">
+                          <div class="col">
+                            <div class="form-group">
+                              <label for="cardNumber">CARD NUMBER</label>
+                              <div class="input-group">
+                                <input
+                                  type="tel"
+                                  class="form-control"
+                                  name="cardNumber"
+                                  id="card"
+                                  placeholder="Valid Card Number"
+                                  autocomplete="cc-number"
+                                  required
+                                  autofocus
+                                />
+                                
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-6">
+                            <div class="form-group">
+                              <label for="cardExpiry">
+                                <span class="hidden-xs">EXPIRATION</span>
+                                <span class="visible-xs-inline">EXP</span>
+                                DATE
+                              </label>
+                              <input
+                                type="tel"
+                                class="form-control"
+                                name="cardExpiry"
+                                id="card-exp"
+                                placeholder="MM / YY"
+                                autocomplete="cc-exp"
+                                required
+                              />
+                            </div>
+                          </div>
+                          <div class="col-6">
+                            <div class="form-group">
+                              <label for="cardCVC">CV CODE</label>
+                              <input
+                                type="tel"
+                                class="form-control"
+                                name="cardCVC"
+                                placeholder="CVC"
+                                id="card-cvc"
+                                autocomplete="cc-csc"
+                                required
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div class="row">
+                          <div class="col">
+                            <button
+                              class="btn btn-success btn-lg btn-block"
+                              type="submit"
+                              id="btnSubmit"
+                            >
+                              Start Subscription
+                            </button>
+                          </div>
+                        </div>
+                        <div class="row" style="display:none;">
+                          <div class="col">
+                            <p class="payment-errors"></p>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                  </div>
                 </div>
               </div>
             </div>
