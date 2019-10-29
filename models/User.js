@@ -19,7 +19,16 @@ const UserSchema = new mongoose.Schema(
     address: {
       type: String,
       default: ''
-    }
+    },
+    orderHistory: [
+      {
+        paid: { type: Number, default: 0 },
+        item: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Product'
+        }
+      }
+    ]
   },
   {
     timestamps: true

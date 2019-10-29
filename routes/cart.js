@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const async = require('async')
-const stripe = require('stripe')('pk_test_1tPKkYH3EcEh8MLtf3KGD9b300Tcw17YHz')
+const stripe = require('stripe')('sk_test_joQddhSvaueVJsBr8ExqUkA900EKvH0vNb')
 const Cart = require('../models/Cart')
 const User = require('../models/User')
 
@@ -20,12 +20,15 @@ router.delete('/removeProduct/:id', removeProductFromCart)
 router.post('/payment', (req, res, next) => {
   const stripeToken = req.body.stripeToken
   const currentCharges = req.body.stripeMoney * 100
+  console.log(stripeToken)
+  console.log(req.body)
 
   stripe.customers
     .create({
       source: stripeToken
     })
     .then(customer => {
+      console.log('hit')
       const result = stripe.charges.create({
         amount: currentCharges,
         currency: 'usd',
@@ -47,9 +50,34 @@ router.post('/payment', (req, res, next) => {
           )
         },
         (cart, callback) => {
-          // User.findOne
+          console.log('line 50', cart)
+
+          cart.items.forEach(order => {
+            req.user.orderHistory.push({ item: order.item, paid: order.price })
+          })
+
+          req.user.save((err, user) => {
+            if (err) throw err
+
+            console.log('user successfully updated')
+          })
+
+          callback(null, cart)
+
+          // Add items to user history
+          // erase everything from cart
+
+          // display message ('charged')
         },
-        user => {}
+        cart => {
+          cart.items = []
+          cart.save((err, cart) => {
+            if (err) throw err
+
+            console.log('cart successfully updated')
+          })
+          res.send('updated history')
+        }
       ])
     })
     .catch(err => {
