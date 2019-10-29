@@ -4,8 +4,9 @@ module.exports = (req, res, next) => {
   if (req.user) {
     Cart.findOne({ user: req.user.id }, (err, cart) => {
       if (err) throw err
+      console.log(cart)
 
-      res.locals.totalCartItems = cart.totalQuantity
+      res.locals.totalCartItems = 0 || cart.totalQuantity
       next()
     })
   } else {
