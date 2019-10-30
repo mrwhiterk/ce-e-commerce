@@ -79,5 +79,27 @@ module.exports = {
     } else {
       res.render('index')
     }
+  },
+
+  searchProductByQuery: (req, res) => {
+    if (req.query.q) {
+      Product.search(
+        {
+          query_string: {
+            query: req.query.q
+          }
+        },
+        (err, data) => {
+          if (err) throw err
+
+          const products = data.hits.hits
+
+          res.render('search/searchResults', {
+            products,
+            query: req.query.q
+          })
+        }
+      )
+    }
   }
 }

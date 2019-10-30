@@ -4,7 +4,6 @@ const async = require('async')
 require('dotenv').config()
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 const Cart = require('../models/Cart')
-const User = require('../models/User')
 
 const {
   addProductToCart,
@@ -68,7 +67,7 @@ router.post('/payment', (req, res, next) => {
             console.log('cart successfully updated')
           })
           req.flash('success', 'successfully purchased')
-          res.redirect('back')
+          res.render('account/purchase-complete')
         }
       ])
     })

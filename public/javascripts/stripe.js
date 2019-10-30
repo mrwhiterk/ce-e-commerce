@@ -7,8 +7,6 @@ $(document).ready(() => {
     if (res.error) {
       console.log(`Stripe error: ${res.error.message}`)
 
-      debugger
-
       $('.payment-errors')
         .parent()
         .parent()
