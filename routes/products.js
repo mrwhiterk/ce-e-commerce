@@ -29,12 +29,26 @@ stream.on('close', () => {
   console.log(`Indexed ${count} document`)
 })
 
-stream.on('error', (error) => {
+stream.on('error', error => {
   console.log('Error', error)
 })
 
 // localhost:3000/products/
 router.get('/', getProducts)
+
+router.get('/searchByJQuery', (req, res) => {
+  const { query } = req.query
+  Product.find(
+    { name: { $regex: new RegExp(query), $options: 'i' } },
+    (err, products) => {
+      if (err) {
+        return res.send({ err })
+      }
+      console.log(products)
+      res.send({ products })
+    }
+  )
+})
 
 router.get('/search', searchProductByQuery)
 
