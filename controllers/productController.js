@@ -81,7 +81,7 @@ module.exports = {
     }
   },
 
-  searchProductByJQuery: (req, res) => {
+  searchProductByAjax: (req, res) => {
     const { query } = req.query
     Product.find({ name: { $regex: new RegExp(query), $options: 'i' } })
       .populate('category')

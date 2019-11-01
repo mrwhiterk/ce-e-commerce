@@ -6,7 +6,7 @@ const {
   getProductsByCategoryId,
   deleteProduct,
   searchProductByQuery,
-  searchProductByJQuery
+  searchProductByAjax
 } = require('../controllers/productController')
 
 const elasticSearchMap = require('../utils/elasticSearch')
@@ -16,7 +16,7 @@ elasticSearchMap()
 // localhost:3000/products/
 router.get('/', getProducts)
 
-router.get('/searchByJQuery', searchProductByJQuery)
+router.get('/searchByJQuery', searchProductByAjax)
 
 router.get('/search', searchProductByQuery)
 
