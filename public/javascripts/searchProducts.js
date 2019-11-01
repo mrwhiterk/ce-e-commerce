@@ -1,18 +1,13 @@
-console.log('hey')
-
-console.log($('#searchInput'))
-let $searchInput = $('#searchInput')
-
-$searchInput.on('keyup', function(e) {
-  let xhr = new XMLHttpRequest()
+$('#searchInput').on('keyup', function (e) {
+  const xhr = new XMLHttpRequest()
   xhr.open('GET', `products/searchByJQuery?query=${e.target.value}`, true)
   xhr.responseType = 'json'
-  xhr.onload = function() {
+  xhr.onload = function () {
     if (this.status === 200) {
-      let data = xhr.response
+      const data = xhr.response
 
       $('#productSearchResults').empty()
-      const { products } = data;
+      const { products } = data
 
       products.forEach(product => {
         $('#productSearchResults').append(`<div class="col"><div class="card">
@@ -27,13 +22,17 @@ $searchInput.on('keyup', function(e) {
               <h5 class="card-title">Name: ${product.name}</h5>
               <p class="card-text">Category: ${product.category.name}</p>
               <p class="card-text">$ ${product.price.toFixed(2)}</p>
-              <a href="/products/${product.id}" class="btn btn-primary">
+              <a href="/products/${product._id}" class="btn btn-primary">
                 Shop
               </a>
             </div>
           </div>
         </div>`)
       })
+
+      if (!products.length) {
+        $('#productSearchResults').html('No results')
+      }
     }
   }
 

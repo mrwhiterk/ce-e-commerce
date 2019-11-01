@@ -5,50 +5,18 @@ const {
   getProductById,
   getProductsByCategoryId,
   deleteProduct,
-  searchProductByQuery
+  searchProductByQuery,
+  searchProductByJQuery
 } = require('../controllers/productController')
 
-const Product = require('../models/Product')
+const elasticSearchMap = require('../utils/elasticSearch')
 
-// elastic search
-
-Product.createMapping((err, mapping) => {
-  if (err) throw err
-
-  console.log('successfully mapped')
-})
-
-const stream = Product.synchronize()
-let count = 0
-
-stream.on('data', () => {
-  count++
-})
-
-stream.on('close', () => {
-  console.log(`Indexed ${count} document`)
-})
-
-stream.on('error', error => {
-  console.log('Error', error)
-})
+elasticSearchMap()
 
 // localhost:3000/products/
 router.get('/', getProducts)
 
-router.get('/searchByJQuery', (req, res) => {
-  const { query } = req.query
-  Product.find(
-    { name: { $regex: new RegExp(query), $options: 'i' } },
-    (err, products) => {
-      if (err) {
-        return res.send({ err })
-      }
-      console.log(products)
-      res.send({ products })
-    }
-  )
-})
+router.get('/searchByJQuery', searchProductByJQuery)
 
 router.get('/search', searchProductByQuery)
 

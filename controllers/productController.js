@@ -81,6 +81,19 @@ module.exports = {
     }
   },
 
+  searchProductByJQuery: (req, res) => {
+    const { query } = req.query
+    Product.find({ name: { $regex: new RegExp(query), $options: 'i' } })
+      .populate('category')
+      .exec((err, products) => {
+        if (err) {
+          return res.send({ err })
+        }
+
+        res.send({ products })
+      })
+  },
+
   searchProductByQuery: (req, res) => {
     if (req.query.q) {
       Product.search(
