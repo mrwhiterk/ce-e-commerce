@@ -5,7 +5,6 @@ $(document).ready(() => {
     let $form = $('#payment-form')
 
     if (res.error) {
-      console.log(`Stripe error: ${res.error.message}`)
 
       $('.payment-errors')
         .parent()
