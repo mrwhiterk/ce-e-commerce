@@ -11,7 +11,8 @@ module.exports = () => {
   const stream = Product.synchronize()
   let count = 0
 
-  stream.on('data', () => {
+  stream.on('data', (err, chunk) => {
+    // console.log(chunk.name)
     count++
   })
 

@@ -1,5 +1,6 @@
 const Product = require('../models/Product')
 const faker = require('faker')
+const elasticSearchMap = require('../utils/elasticSearch')
 
 const { paginate } = require('../utils/pagination')
 
@@ -28,6 +29,8 @@ module.exports = {
     }
     try {
       const products = await Product.create(newProducts)
+
+      elasticSearchMap()
 
       req.flash('success', `created ${products.length} products`)
       res.render('categories/createFakeProduct', {
@@ -64,10 +67,11 @@ module.exports = {
   deleteProduct: async (req, res) => {
     try {
       const product = await Product.findByIdAndDelete(req.params.id)
-      res.json({
-        confirmation: 'success',
-        message: `product: ${product.name} was successfully deleted`
-      })
+      elasticSearchMap()
+
+      req.flash('success', `product: ${product.name} was successfully deleted`)
+
+      res.redirect('back')
     } catch (err) {
       if (err) throw err
     }
