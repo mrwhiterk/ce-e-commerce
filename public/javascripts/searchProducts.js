@@ -1,16 +1,19 @@
-$('#searchInput').on('keyup', function (e) {
-  const xhr = new XMLHttpRequest()
-  xhr.open('GET', `products/searchByJQuery?query=${e.target.value}`, true)
-  xhr.responseType = 'json'
-  xhr.onload = function () {
-    if (this.status === 200) {
-      const data = xhr.response
+$('#searchInput').on('keyup', async function({ target: { value } }) {
+  const $productSearchResults = $('#productSearchResults')
 
-      $('#productSearchResults').empty()
-      const { products } = data
+  const response = await fetch(
+    `http://localhost:3000/products/searchByAjax?query=${value}`
+  )
+  const { products } = await response.json()
 
-      products.forEach(product => {
-        $('#productSearchResults').append(`<div class="col"><div class="card">
+  $productSearchResults.empty()
+
+  if (!products.length) {
+    $productSearchResults.html('No results')
+  }
+
+  products.forEach(product => {
+    $productSearchResults.append(`<div class="col"><div class="card">
             <a href="/products/${product.id}">
               <img
                 class="card-img-top"
@@ -28,13 +31,5 @@ $('#searchInput').on('keyup', function (e) {
             </div>
           </div>
         </div>`)
-      })
-
-      if (!products.length) {
-        $('#productSearchResults').html('No results')
-      }
-    }
-  }
-
-  xhr.send()
+  })
 })

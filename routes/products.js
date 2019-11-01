@@ -16,7 +16,7 @@ elasticSearchMap()
 // localhost:3000/products/
 router.get('/', getProducts)
 
-router.get('/searchByJQuery', searchProductByAjax)
+router.get('/searchByAjax', searchProductByAjax)
 
 router.get('/search', searchProductByQuery)
 
