@@ -4,7 +4,6 @@
       Best Online Shopping
     </h1>
     <div class="input-group mb-3">
-      
       <input
         type="text"
         id="searchInput"
@@ -13,15 +12,6 @@
         aria-label="Search Term"
         aria-describedby="button-addon2"
       />
-      <!-- <div class="input-group-append">
-        <button
-          class="btn btn-outline-secondary"
-          type="button"
-          id="searchBtn"
-        >
-          Search
-        </button>
-      </div> -->
     </div>
   </div>
 </div>
@@ -48,9 +38,27 @@
         <h5 class="card-title">Name: <%= product.name %></h5>
         <p class="card-text">Category: <%= product.category.name %></p>
         <p class="card-text">$ <%= product.price.toFixed(2) %></p>
-        <a href="/products/<%= product.id %>" class="btn btn-primary">
-          Shop
-        </a>
+        <div class="d-flex justify-content-end">
+          <a href="/products/<%= product.id %>" class="btn btn-primary">
+            Shop
+          </a>
+          <% if (admin.length) { %>
+          <a
+            href="/admin/products/<%= product.id %>/edit"
+            class="btn btn-warning"
+          >
+            Edit
+          </a>
+          <form
+            class="form-inline"
+            action="/products/<%= product.id %>?_method=DELETE"
+            method="POST"
+          >
+            <input type="submit" class="btn btn-danger" value="delete" />
+          </form>
+
+          <% } %>
+        </div>
       </div>
     </div>
   </div>

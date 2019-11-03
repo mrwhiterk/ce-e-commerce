@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <% include ../partials/account %>
+  <body>
+    <% include ../partials/nav %>
+    <br />
+    <% errors.forEach( message => { %>
+    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+      <%= message %>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <% }) %>
+    <% success.forEach( message => { %>
+    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+      <%= message %>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <% }) %>
+    <div class="row">
+      <div class="col">
+        <img src="<%= product.image %>" />
+      </div>
+      <div class="col">
+        <h1>Admin Console: Edit Product</h1>
+        <h2>Name: <%= product.name %></h2>
+        <h2>Price: <%= product.price %></h2>
+
+        <form method="POST" action="/admin/products/<%= product._id %>?_method=PUT">
+          
+
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              name="name"
+              id="name"
+              required
+              value="<%= product.name %>"
+            />
+            <input
+              type="text"
+              class="form-control"
+              name="price"
+              id="price"
+              required
+              value="<%= product.price.toFixed(2) %>"
+            />
+            <input
+              type="text"
+              class="form-control"
+              name="image"
+              id="image"
+              required
+              value="<%= product.image %>"
+            />
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-lg">
+            update product
+          </button>
+          
+        </form>
+      </div>
+    </div>
+    <% include ../partials/footer %>
+  </body>
+</html>

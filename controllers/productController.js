@@ -118,5 +118,28 @@ module.exports = {
         }
       )
     }
+  },
+  // http://localhost:3000/products/5db9cf5b8860d26d01243cfc sleek wooden chicken
+  showEditForm: async (req, res) => {
+    try {
+      const product = await Product.findById(req.params.id)
+
+      res.render('products/editProduct', { product })
+    } catch (err) {
+      res.send({ err })
+    }
+  },
+
+  editProduct: async (req, res) => {
+    try {
+      const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+        new: true
+      })
+
+      req.flash('success', `successfully updated ${product.name}`)
+      res.redirect(`/products/${product._id}`)
+    } catch (err) {
+      res.send({ err })
+    }
   }
 }
