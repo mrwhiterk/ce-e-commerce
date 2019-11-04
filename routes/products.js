@@ -9,6 +9,10 @@ const {
   searchProductByAjax
 } = require('../controllers/productController')
 
+const elasticSearchMap = require('../utils/elasticSearch')
+
+elasticSearchMap()
+
 // localhost:3000/products/
 router.get('/', getProducts)
 

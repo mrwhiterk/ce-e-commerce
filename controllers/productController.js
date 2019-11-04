@@ -30,7 +30,7 @@ module.exports = {
     try {
       const products = await Product.create(newProducts)
 
-      elasticSearchMap()
+      // elasticSearchMap()
 
       req.flash('success', `created ${products.length} products`)
       res.render('categories/createFakeProduct', {
@@ -67,7 +67,7 @@ module.exports = {
   deleteProduct: async (req, res) => {
     try {
       const product = await Product.findByIdAndDelete(req.params.id)
-      elasticSearchMap()
+      // elasticSearchMap()
 
       req.flash('success', `product: ${product.name} was successfully deleted`)
 
