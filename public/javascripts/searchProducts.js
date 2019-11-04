@@ -2,7 +2,7 @@ $('#searchInput').on('keyup', async function({ target: { value } }) {
   const $productSearchResults = $('#productSearchResults')
 
   const response = await fetch(
-    `http://localhost:3000/products/searchByAjax?query=${value}`
+    `/products/searchByAjax?query=${value}`
   )
   const { products } = await response.json()
 
