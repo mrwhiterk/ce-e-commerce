@@ -23,5 +23,6 @@ ProductSchema.plugin(mongoosastic, {
     }
   ]
 })
+console.log(process.env.BONSAI_URL)
 
 module.exports = mongoose.model('product', ProductSchema)
