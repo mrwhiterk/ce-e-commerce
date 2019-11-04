@@ -12,7 +12,7 @@ module.exports = () => {
   let count = 0
 
   stream.on('data', (err, chunk) => {
-    // console.log(chunk.name)
+    if (err) throw err
     count++
   })
 
