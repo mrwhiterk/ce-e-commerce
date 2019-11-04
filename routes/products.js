@@ -11,7 +11,7 @@ const {
 
 const elasticSearchMap = require('../utils/elasticSearch')
 
-elasticSearchMap()
+// elasticSearchMap()
 
 // localhost:3000/products/
 router.get('/', getProducts)
