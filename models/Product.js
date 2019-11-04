@@ -21,5 +21,6 @@ ProductSchema.plugin(mongoosastic, {
     }
   ]
 })
+console.log('process.env.bonsai', process.env.BONSAI_URL)
 
 module.exports = mongoose.model('Product', ProductSchema)
